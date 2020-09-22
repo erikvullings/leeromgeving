@@ -1,0 +1,29 @@
+{
+  "name": "leeromgeving",
+  "version": "0.0.1",
+  "private": "true",
+  "description": "Webapp with newsletters, lessons learned, scenario dilemmas",
+  "main": "index.js",
+  "scripts": {
+    "clean": "pnpm recursive run cleanup",
+    "start": "pnpm recursive run dev",
+    "build:domain": "pnpm recursive run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erikvullings/leeromgeving.git"
+  },
+  "keywords": [
+    "social",
+    "platform"
+  ],
+  "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erikvullings/leeromgeving/issues"
+  },
+  "homepage": "https://github.com/erikvullings/leeromgeving#readme",
+  "devDependencies": {
+    "pnpm": "^5.6.0"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "private": "true",
+  "description": "REST server for GUI dashboard.",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "cleanup": "npm run clean",
+    "dev": "npm start",
+    "start": "node node_modules/rest-easy-loki/dist/cli.js -u uploads"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erikvullings/leeromgeving.git"
+  },
+  "keywords": [
+    "BOB",
+    "dashboard",
+    "server"
+  ],
+  "author": "Erik Vullings <erik.vullings@tno.nl> (http://www.tno.nl)",
+  "license": "MIT",
+  "dependencies": {
+    "rest-easy-loki": "^0.7.6"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}

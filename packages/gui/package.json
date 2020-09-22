@@ -1,0 +1,46 @@
+{
+  "name": "gui",
+  "private": "true",
+  "version": "0.0.1",
+  "description": "GUI dashboard.",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf ./public ./.cache ./dist",
+    "cleanup": "npm run clean",
+    "dev": "npm start",
+    "start": "parcel index.html",
+    "build": "parcel build index.html --out-dir ../server/public",
+    "build:domain": "npm run clean && npm run build",
+    "link": "npm link mithril-ui-form"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://ci.tno.nl/gitlab/erik.vullings-tno/bob-eye.git"
+  },
+  "keywords": [
+    "BOB",
+    "dashboard"
+  ],
+  "author": "Erik Vullings <erik.vullings@tno.nl> (http://www.tno.nl)",
+  "license": "TNO",
+  "dependencies": {
+    "leaflet": "^1.7.1",
+    "leaflet-draw": "^1.0.4",
+    "material-icons": "^0.3.1",
+    "materialize-css": "^1.0.0",
+    "mithril": "^2.0.4",
+    "mithril-leaflet": "^0.4.3",
+    "mithril-materialized": "^0.16.4",
+    "mithril-ui-form": "^0.8.5",
+    "slimdown-js": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.5.17",
+    "@types/materialize-css": "^1.0.8",
+    "@types/mithril": "^2.0.4",
+    "cssnano": "^4.1.10",
+    "parcel-bundler": "^1.12.4",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.0.3"
+  }
+}
