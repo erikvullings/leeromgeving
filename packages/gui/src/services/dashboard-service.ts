@@ -1,22 +1,30 @@
 import m, { RouteDefs } from 'mithril';
 import { IDashboard } from '../models';
-import { actions, states, MeiosisComponent } from './meiosis';
-import { ItemView, AboutPage, HelpPage, HomePage, Layout, ItemList, ItemForm } from '../components';
+import { actions, states } from './meiosis';
+import { Layout } from '../components/layout';
+import { AboutPage, HelpPage, HomePage, LessonsList, LessonForm } from '../components';
 
 export const enum Dashboards {
   HOME = 'HOME',
   ABOUT = 'ABOUT',
   HELP = 'HELP',
-  LIST = 'LIST',
-  VIEW = 'VIEW',
+  OVERVIEW = 'LIST',
   EDIT = 'EDIT',
   USER = 'USER',
+  LESSONS = 'LESSONS',
+  LESSONS_DETAILS = 'LESSONS_DETAILS',
+  NEWS = 'NEWS',
+  NEWS_DETAILS = 'NEWS_DETAILS',
+  TIPS = 'TIPS',
+  TIPS_DETAILS = 'TIPS_DETAILS',
+  SCENARIOS = 'SCENARIOS',
+  SCENARIOS_DETAILS = 'SCENARIOS_DETAILS',
 }
 
 class DashboardService {
   private dashboards!: ReadonlyArray<IDashboard>;
 
-  constructor(private layout: MeiosisComponent, dashboards: IDashboard[]) {
+  constructor(dashboards: IDashboard[]) {
     this.setList(dashboards);
   }
 
@@ -52,6 +60,7 @@ class DashboardService {
   }
 
   public routingTable() {
+    console.log('INIT');
     return this.dashboards.reduce((p, c) => {
       p[c.route] =
         c.hasNavBar === false
@@ -61,7 +70,7 @@ class DashboardService {
           : {
               render: () =>
                 m(
-                  this.layout,
+                  Layout,
                   { state: states(), actions: actions },
                   m(c.component, {
                     state: states(),
@@ -74,23 +83,30 @@ class DashboardService {
   }
 }
 
-export const dashboardSvc: DashboardService = new DashboardService(Layout, [
+export const dashboardSvc: DashboardService = new DashboardService([
   {
-    id: Dashboards.LIST,
+    id: Dashboards.OVERVIEW,
     title: 'OVERZICHT',
     icon: 'home',
     route: '/overzicht',
     visible: true,
-    component: ItemList,
+    component: HelpPage, // TODO replace with dashboard view, showing newest items of all collections
   },
   {
-    id: Dashboards.VIEW,
-    title: 'BOB-view',
-    // hasNavBar: false,
-    icon: 'dashboard',
-    route: '/bob/:id',
+    id: Dashboards.LESSONS,
+    title: 'Lessons-learnt',
+    icon: 'forum',
+    route: '/les/',
+    visible: true,
+    component: LessonsList,
+  },
+  {
+    id: Dashboards.LESSONS_DETAILS,
+    title: 'Lessons-learnt',
+    icon: 'book',
+    route: '/les/:id',
     visible: false,
-    component: ItemView,
+    component: LessonForm,
   },
   {
     id: Dashboards.EDIT,
@@ -98,7 +114,7 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     icon: 'edit',
     route: '/bewerken/:id',
     visible: false,
-    component: ItemForm,
+    component: LessonForm,
   },
   {
     id: Dashboards.ABOUT,
@@ -118,6 +134,7 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
   },
   {
     id: Dashboards.HOME,
+    icon: 'home',
     default: true,
     hasNavBar: false,
     title: 'HOME',

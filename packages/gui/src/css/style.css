@@ -267,3 +267,16 @@ li.collection-item:first-child {
   margin-bottom: -65px;
   height: 91vh !important;
 }
+
+.material-icons.hoverable {
+  text-align: center;
+  cursor: pointer;
+}
+.material-icons.hoverable:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

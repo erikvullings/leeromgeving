@@ -7,6 +7,7 @@ dependencies:
   mithril-leaflet: 0.4.3_491ddecb47f7cd12dfa6f425d3d35f4a
   mithril-materialized: 0.16.4_f3d9df6f4766fd28b6cfb8072ccbc3ca
   mithril-ui-form: 0.8.5_356b82da00453db109848b0ac283c7ff
+  rfc6902: 4.0.0
   slimdown-js: 0.3.0
 devDependencies:
   '@types/leaflet': 1.5.17
@@ -4622,6 +4623,10 @@ packages:
       node: '>=0.12'
     resolution:
       integrity: sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
+  /rfc6902/4.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-SnH68/mZmd3awiI2shqYsGi8qZ+0NOD/p/EmFzXHyJy40AqpG9aC4UC9Ybtiz5+rSN2Ze5RmNo47u4TyoBOlNA==
   /rgb-regex/1.0.1:
     dev: true
     resolution:
@@ -5467,6 +5472,7 @@ specifiers:
   mithril-materialized: ^0.16.4
   mithril-ui-form: ^0.8.5
   parcel-bundler: ^1.12.4
+  rfc6902: ^4.0.0
   rimraf: ^3.0.2
   slimdown-js: ^0.3.0
   typescript: ^4.0.3

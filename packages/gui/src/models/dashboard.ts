@@ -1,16 +1,16 @@
 import { ComponentTypes } from 'mithril';
+import { Dashboards } from '../services';
 
 export type IconType = () => string | string;
 
-type IconResolver = () => string;
-type IconOrResolver = string | IconResolver;
+export type IconResolver = () => string;
 
 export interface IDashboard {
-  id: string;
+  id: Dashboards;
   default?: boolean;
   hasNavBar?: boolean;
   title: string;
-  icon?: IconOrResolver;
+  icon: string | IconResolver;
   route: string;
   visible: boolean;
   component: ComponentTypes<any, any>;

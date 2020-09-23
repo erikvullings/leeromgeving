@@ -1,83 +1,81 @@
 import M from 'materialize-css';
 import m from 'mithril';
-import { Button, ModalPanel } from 'mithril-materialized';
+import { Button, FlatButton, ModalPanel } from 'mithril-materialized';
 import { LayoutForm, I18n } from 'mithril-ui-form';
-import { IContent } from '../models';
-import { MeiosisComponent } from '../services';
-import { Dashboards, dashboardSvc } from '../services/dashboard-service';
-import { itemTemplate } from '../templates';
-import { capitalizeFirstLetter } from '../utils';
-import { CircularSpinner } from './ui/preloader';
+import { lessonTemplate } from '.';
+import { IContent } from '../../../models';
+import { MeiosisComponent } from '../../../services';
+import { Dashboards } from '../../../services/dashboard-service';
+import { capitalizeFirstLetter } from '../../../utils';
+import { CircularSpinner } from '../../ui/preloader';
+import { LessonView } from './lesson-view';
 
-const log = console.log;
+// const log = console.log;
 
-const close = async (e?: UIEvent) => {
-  log('closing...');
-  dashboardSvc.switchTo(Dashboards.LIST);
-  if (e) {
-    e.preventDefault();
-  }
-};
+// const close = async (e?: UIEvent, changePage: (id: Dashboards) => void) => {
+//   log('closing...');
+//   changePage(Dashboards.OVERVIEW);
+//   if (e) {
+//     e.preventDefault();
+//   }
+// };
 
-export const ItemForm: MeiosisComponent = () => {
-  const state = {
-    // hasChanged: false,
-    loaded: false,
-    isValid: false,
-    error: '',
-    /** Relevant context for the Form, can be used with show/disabling */
-    context: {
-      admin: true,
-    },
-  };
-
+export const LessonForm: MeiosisComponent = () => {
   return {
     oninit: ({
       attrs: {
         state: {
-          items: { current },
+          lessons: { current },
         },
-        actions,
+        actions: {
+          changePage,
+          lessons: { load },
+        },
       },
     }) => {
       const id = +m.route.param('id');
       if (!id && !current) {
-        dashboardSvc.switchTo(Dashboards.LIST);
+        changePage(Dashboards.OVERVIEW);
         return;
       }
-      if (!id) {
-        dashboardSvc.switchTo(Dashboards.EDIT, { id: current?.$loki });
-      }
       if (!current || (id && current.$loki !== id)) {
-        dashboardSvc.switchTo(Dashboards.EDIT, { id });
-        actions.items.load(id);
+        changePage(Dashboards.LESSONS_DETAILS, { id });
+        load(id);
       }
     },
 
-    view: ({
-      attrs: {
-        state: {
-          items: { current },
-        },
-        actions,
-      },
-    }) => {
+    view: ({ attrs: { state, actions } }) => {
+      const {
+        lessons: { current, section, mode },
+      } = state;
+
       if (!current) {
         return m(CircularSpinner, {
           className: 'center-align',
           style: 'margin-top: 20%;',
         });
       }
-      const { context } = state;
+
+      if (mode !== 'edit') {
+        return [
+          m(LessonView, { state, actions }),
+          m(FlatButton, { label: 'EDIT', onclick: () => actions.lessons.changeMode('edit') }),
+        ];
+      }
+      const {
+        lessons: { save, del, changeSection, changeMode },
+        changePage,
+      } = actions;
+      // const { context } = state;
       // log(event);
-      const sections = itemTemplate
+      const sections = lessonTemplate
         .filter((c) => c.type === 'section')
         .map((c) => ({
           style: 'cursor: pointer;',
           id: c.id,
           title: c.label || capitalizeFirstLetter(c.id),
         }));
-      const section = m.route.param('section') || sections[0].id;
+      // const sectionId = section || m.route.param('section') || (sections.length > 0 ? sections[0].id : undefined);
       // console.log(JSON.stringify(item?.location, null, 2));
       return (
         current &&
@@ -93,28 +91,33 @@ export const ItemForm: MeiosisComponent = () => {
                 },
               },
               [
-                m('h4.primary-text', { style: 'margin-left: 20px;' }, 'Inhoud'),
+                sections.length > 0 && m('h4.primary-text', { style: 'margin-left: 20px;' }, 'Inhoud'),
                 ...sections.map((s) =>
                   m(
                     'li',
+                    // TODO REPLACE with a button and use the action.changeSection
                     m(
-                      m.route.Link,
+                      FlatButton,
                       {
-                        href: dashboardSvc.route(Dashboards.EDIT).replace(':id', `${current.$loki}?section=${s.id}`),
-                      },
-                      m('span.primary-text', s.title)
+                        label: s.title,
+                        onclick: changeSection(s.id as string),
+                      }
+                      // m.route.Link,
+                      // {
+                      //   href: dashboardSvc
+                      //     .route(Dashboards.LESSONS_DETAILS)
+                      //     .replace(':id', `${current.$loki}?section=${s.id}`),
+                      // },
+                      // m('span.primary-text', s.title)
                     )
                   )
                 ),
                 m('.buttons', [
                   m(Button, {
-                    label: 'Toon dashboard',
+                    label: 'Toon les',
                     iconName: 'visibility',
                     className: 'right col s12',
-                    onclick: () =>
-                      dashboardSvc.switchTo(Dashboards.VIEW, {
-                        id: current.$loki,
-                      }),
+                    onclick: () => changeMode('view'),
                   }),
                   // m(Button, {
                   //   label: 'Save event',
@@ -124,7 +127,7 @@ export const ItemForm: MeiosisComponent = () => {
                   // }),
                   m(Button, {
                     modalId: 'delete-item',
-                    label: 'Verwijder item',
+                    label: 'Verwijder les',
                     iconName: 'delete',
                     class: 'red col s12',
                   }),
@@ -135,7 +138,7 @@ export const ItemForm: MeiosisComponent = () => {
           m('.col.s12.l9', [
             m(LayoutForm, {
               key: section,
-              form: itemTemplate,
+              form: lessonTemplate,
               obj: current,
               i18n: {
                 pickOne: 'Kies een',
@@ -144,23 +147,22 @@ export const ItemForm: MeiosisComponent = () => {
               onchange: (_isValid, obj) => {
                 // item.location = undefined;
                 console.log(JSON.stringify(obj, null, 2));
-                actions.items.save(obj as IContent);
+                save(obj as IContent);
               },
-              context,
               section,
             }),
           ]),
           m(ModalPanel, {
             id: 'delete-item',
-            title: 'Item verwijderen',
-            description: 'Wil je dit item daadwerkelijk verwijderen - er is geen weg terug?',
+            title: 'Les verwijderen',
+            description: 'Wil je deze les daadwerkelijk verwijderen - er is geen weg terug?',
             options: { opacity: 0.7 },
             buttons: [
               {
                 label: 'Delete',
                 onclick: async () => {
-                  current.$loki && actions.items.del(current.$loki);
-                  close();
+                  current.$loki && del(current.$loki);
+                  changePage(Dashboards.LESSONS);
                 },
               },
               {

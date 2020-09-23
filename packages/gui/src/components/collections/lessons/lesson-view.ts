@@ -1,44 +1,38 @@
 import m from 'mithril';
 // import { labelResolver } from 'mithril-ui-form';
-import { labelResolver } from '../utils';
-import { MeiosisComponent } from '../services';
-import { Dashboards, dashboardSvc } from '../services/dashboard-service';
-import { CircularSpinner } from './ui/preloader';
-import { itemTemplate } from '../templates';
-import { IContent } from '../models';
+import { labelResolver } from '../../../utils';
+import { MeiosisComponent } from '../../../services';
+import { CircularSpinner } from './../../ui/preloader';
+import { IContent } from '../../../models';
+import { lessonTemplate } from '.';
 
-export const ItemView: MeiosisComponent = () => {
+export const LessonView: MeiosisComponent = () => {
   const state = {
-    refresh: 0,
     loaded: false,
-    resolveObj: labelResolver(itemTemplate),
+    resolveObj: labelResolver(lessonTemplate),
   };
   return {
     oninit: ({
       attrs: {
         state: {
-          items: { current },
+          lessons: { current },
         },
-        actions,
+        actions: {
+          lessons: { load },
+        },
       },
     }) => {
-      state.refresh = setInterval(() => m.redraw(), 5000);
       const id = +m.route.param('id');
       if (id && current?.$loki !== id) {
-        actions.items.load(id);
-      } else if (current) {
-        dashboardSvc.switchTo(Dashboards.VIEW, { id: current.$loki });
+        load(id);
       }
-    },
-    onremove: () => {
-      clearInterval(state.refresh);
     },
     view: ({
       attrs: {
-        state: { items },
+        state: { lessons },
       },
     }) => {
-      const { current } = items;
+      const { current } = lessons;
       const { resolveObj } = state;
       // console.log(JSON.stringify(item, null, 2));
       const resolved = resolveObj<IContent>(current);

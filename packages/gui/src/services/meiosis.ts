@@ -1,7 +1,7 @@
 import { FactoryComponent } from 'mithril';
 import Stream from 'mithril/stream';
 import { merge } from '../utils/mergerino';
-import { IContent } from '../models';
+import { IContent, ILesson } from '../models';
 import {
   appStateMgmt,
   IAppStateActions,
@@ -20,9 +20,9 @@ import {
  */
 
 /** Names of the collections */
-export type CollectionNames = 'items' | 'items2';
+export type CollectionNames = 'lessons' | 'tips' | 'news' | 'scenarios' | 'dilemmas';
 
-const itemsCollection = collectionFactory<IContent>('items');
+const lessonsCollection = collectionFactory<ILesson>('lessons');
 
 export interface IAppModel extends IAppStateModel, CollectionsModel<IContent> {}
 
@@ -40,11 +40,11 @@ export type MeiosisComponent = FactoryComponent<{
 }>;
 
 const app = {
-  initial: Object.assign({}, appStateMgmt.initial, itemsCollection.initial) as IAppModel,
-  actions: (update: UpdateStream) =>
-    Object.assign({}, appStateMgmt.actions(update), itemsCollection.actions(update)) as IActions,
+  initial: Object.assign({}, appStateMgmt.initial, lessonsCollection.initial) as IAppModel,
+  actions: (update: UpdateStream, states: Stream<IAppModel>) =>
+    Object.assign({}, appStateMgmt.actions(update, states), lessonsCollection.actions(update, states)) as IActions,
 };
 
 const update = Stream<ModelUpdateFunction>();
 export const states = Stream.scan(merge, app.initial, update);
-export const actions = app.actions(update);
+export const actions = app.actions(update, states);

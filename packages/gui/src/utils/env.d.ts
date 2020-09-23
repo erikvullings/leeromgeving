@@ -1,1 +1,1 @@
-declare const process: { env: { api: string } };
+declare const process: { env: { SERVER: string } };

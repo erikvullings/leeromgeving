@@ -6,6 +6,7 @@ const error = console.error;
 
 const createRestServiceFactory = (apiService: string) => {
   return <T extends IContent>(urlFragment: string) => {
+    console.log(apiService);
     const url = `${apiService}/api/${urlFragment}/`;
     const withCredentials = false;
 
@@ -97,4 +98,4 @@ const createRestServiceFactory = (apiService: string) => {
   };
 };
 
-export const restServiceFactory = createRestServiceFactory(process.env.api || 'http://localhost:3210');
+export const restServiceFactory = createRestServiceFactory(process.env.SERVER || location.origin);
