@@ -1,7 +1,7 @@
 import { ILokiObj } from './loki-object';
 
 export interface IContent extends ILokiObj {
-  type: string;
+  type: string | string[];
   title?: string;
   author?: string;
   rating?: number;
