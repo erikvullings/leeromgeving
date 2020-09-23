@@ -39,7 +39,7 @@ export const LessonForm: MeiosisComponent = () => {
         return;
       }
       if (!current || (id && current.$loki !== id)) {
-        changePage(Dashboards.LESSONS_DETAILS, { id });
+        // changePage(Dashboards.LESSONS_DETAILS, { id });
         load(id);
       }
     },
@@ -56,10 +56,32 @@ export const LessonForm: MeiosisComponent = () => {
         });
       }
 
-      if (!/mode=edit/.test(m.route.get()) && mode !== 'edit') {
+      if (mode === 'view' || (!/mode=edit/.test(m.route.get()) && mode !== 'edit')) {
         return [
           m(LessonView, { state, actions }),
-          m(FlatButton, { label: 'EDIT', onclick: () => actions.lessons.changeMode('edit') }),
+          m('ul.list-inline', [
+            m('li', m(FlatButton, { label: 'EDIT', onclick: () => actions.lessons.changeMode('edit') })),
+            m(
+              'li',
+              m(FlatButton, {
+                label: 'UP',
+                onclick: () => {
+                  current.rating = (current.rating || 0) + 1;
+                  actions.lessons.save(current);
+                },
+              })
+            ),
+            m(
+              'li',
+              m(FlatButton, {
+                label: 'DOWN',
+                onclick: () => {
+                  current.rating = (current.rating || 0) - 1;
+                  actions.lessons.save(current);
+                },
+              })
+            ),
+          ]),
         ];
       }
       const {

@@ -5,6 +5,8 @@ import { MeiosisComponent } from '../../../services';
 import { CircularSpinner } from './../../ui/preloader';
 import { IContent } from '../../../models';
 import { lessonTemplate } from '.';
+import { SlimdownView } from 'mithril-ui-form';
+import { LessonTypes } from './lesson-template';
 
 export const LessonView: MeiosisComponent = () => {
   const state = {
@@ -47,9 +49,44 @@ export const LessonView: MeiosisComponent = () => {
         return undefined;
       }
 
-      const { title, desc } = current;
+      const { title, type, desc, tag, rating, solution, img, author, remarks } = current;
 
-      return m('.item-view', m('.row', [m('.col.s6', title), m('.col.s6', desc)]));
+      const convertedTypes = type
+        ? type instanceof Array
+          ? type
+              .map((t) =>
+                LessonTypes.filter((x) => x.id === t)
+                  .map((t) => t.label)
+                  .shift()
+              )
+              .filter(Boolean)
+              .join(', ')
+          : LessonTypes.filter((x) => x.id === type)
+              .map((t) => t.label)
+              .shift()
+        : undefined;
+
+      return m(
+        '.item-view',
+        m('.row', [
+          m(
+            'h3.center-align',
+            m.trust(`${title}${rating ? ` (${rating}<span style="color: gold">&#9733;</span>)` : ''}`)
+          ),
+          author && m('b.col.s12.center-align', author),
+          (tag || type) && m('i.col.s12.center-align', `${tag}${type ? ` (categorie: ${convertedTypes})` : ''}`),
+          img &&
+            m('img.materialboxed', {
+              style: 'max-width: 100%; max-height: 300px; margin: 0 auto',
+              alt: title,
+              src: `${process.env.SERVER}${img}`,
+              oncreate: ({ dom }) => M.Materialbox.init(dom),
+            }),
+          desc && [m('h4', 'Probleem omschrijving'), m(SlimdownView, { md: desc })],
+          solution && [m('h4', 'Oplossing'), m(SlimdownView, { md: solution })],
+          remarks && [m('h4', 'Opmerkingen'), m(SlimdownView, { md: remarks })],
+        ])
+      );
     },
   };
 };

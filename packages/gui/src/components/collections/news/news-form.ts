@@ -39,7 +39,6 @@ export const NewsForm: MeiosisComponent = () => {
         return;
       }
       if (!current || (id && current.$loki !== id)) {
-        changePage(Dashboards.NEWS_DETAILS, { id });
         load(id);
       }
     },
@@ -56,7 +55,7 @@ export const NewsForm: MeiosisComponent = () => {
         });
       }
 
-      if (!/mode=edit/.test(m.route.get()) && mode !== 'edit') {
+      if (mode === 'view' || (!/mode=edit/.test(m.route.get()) && mode !== 'edit')) {
         return [
           m(NewsView, { state, actions }),
           m(FlatButton, { label: 'EDIT', onclick: () => actions.news.changeMode('edit') }),
