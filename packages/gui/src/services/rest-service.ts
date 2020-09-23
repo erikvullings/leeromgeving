@@ -10,7 +10,7 @@ const createRestServiceFactory = (apiService: string) => {
     const url = `${apiService}/api/${urlFragment}/`;
     const withCredentials = false;
 
-    const create = async (item: T, fd?: FormData) => {
+    const create = async (item: Partial<T>, fd?: FormData) => {
       try {
         return await m.request<T>({
           method: 'POST',
@@ -23,7 +23,7 @@ const createRestServiceFactory = (apiService: string) => {
       }
     };
 
-    const update = async (item: T, fd?: FormData) => {
+    const update = async (item: Partial<T>, fd?: FormData) => {
       try {
         console.debug('put');
         return await m
@@ -39,7 +39,8 @@ const createRestServiceFactory = (apiService: string) => {
       }
     };
 
-    const save = async (item: T, fd?: FormData) => (item.$loki ? await update(item, fd) : await create(item, fd));
+    const save = async (item: Partial<T>, fd?: FormData) =>
+      item.$loki ? await update(item, fd) : await create(item, fd);
 
     const del = async (id: number) => {
       try {
