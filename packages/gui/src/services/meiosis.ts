@@ -9,6 +9,7 @@ import {
   CollectionsActions,
   collectionFactory,
   CollectionsModel,
+  CollectionType,
 } from './states';
 
 /*
@@ -23,9 +24,11 @@ import {
 export type CollectionNames = 'lessons' | 'tips' | 'news' | 'scenarios' | 'dilemmas';
 
 const lessonsCollection = collectionFactory<ILesson>('lessons');
-const newsCollection = collectionFactory<ILesson>('news');
+const newsCollection = collectionFactory<IContent>('news');
 
-export interface IAppModel extends IAppStateModel, CollectionsModel<IContent> {}
+export interface IAppModel extends IAppStateModel, CollectionsModel<IContent> {
+  lessons: CollectionType<ILesson>;
+}
 
 export interface IActions extends IAppStateActions, CollectionsActions<IContent> {}
 
