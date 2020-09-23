@@ -21,7 +21,7 @@ export type CollectionActions<T extends IContent> = {
   /** Select an item */
   load: (id: number) => void;
   /** Save an item */
-  save: (item: T) => void; // | T;
+  save: (item: Partial<T>) => void; // | T;
   /** Delete an item */
   del: (id: number) => void;
   /** Change section */
@@ -65,12 +65,12 @@ export const collectionFactory = <T extends IContent>(collectionName: Collection
             }
           },
           save: async (item) => {
-            const state = states();
-            const { mode } = state[collectionName];
-            const newMode = mode || !item.$loki ? 'edit' : 'view';
+            // const state = states();
+            // const { mode } = state[collectionName];
+            // const newMode = mode || !item.$loki ? 'edit' : 'view';
             const current = await restSvc.save(item);
             if (current) {
-              us({ [collectionName]: { mode: newMode, current } });
+              us({ [collectionName]: { current } });
             }
           },
           del: async (id) => {
