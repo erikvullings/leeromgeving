@@ -23,6 +23,7 @@ import {
 export type CollectionNames = 'lessons' | 'tips' | 'news' | 'scenarios' | 'dilemmas';
 
 const lessonsCollection = collectionFactory<ILesson>('lessons');
+const newsCollection = collectionFactory<ILesson>('news');
 
 export interface IAppModel extends IAppStateModel, CollectionsModel<IContent> {}
 
@@ -40,9 +41,14 @@ export type MeiosisComponent = FactoryComponent<{
 }>;
 
 const app = {
-  initial: Object.assign({}, appStateMgmt.initial, lessonsCollection.initial) as IAppModel,
+  initial: Object.assign({}, appStateMgmt.initial, lessonsCollection.initial, newsCollection.initial) as IAppModel,
   actions: (update: UpdateStream, states: Stream<IAppModel>) =>
-    Object.assign({}, appStateMgmt.actions(update, states), lessonsCollection.actions(update, states)) as IActions,
+    Object.assign(
+      {},
+      appStateMgmt.actions(update, states),
+      lessonsCollection.actions(update, states),
+      newsCollection.actions(update, states)
+    ) as IActions,
 };
 
 const update = Stream<ModelUpdateFunction>();

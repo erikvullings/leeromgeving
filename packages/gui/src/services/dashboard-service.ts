@@ -3,6 +3,7 @@ import { IDashboard } from '../models';
 import { actions, states } from './meiosis';
 import { Layout } from '../components/layout';
 import { AboutPage, HelpPage, HomePage, LessonsList, LessonForm } from '../components';
+import { NewsForm, NewsList } from '../components/collections/news';
 
 export const enum Dashboards {
   HOME = 'HOME',
@@ -88,9 +89,9 @@ export const dashboardSvc: DashboardService = new DashboardService([
     id: Dashboards.OVERVIEW,
     title: 'OVERZICHT',
     icon: 'home',
-    route: '/overzicht',
+    route: '/',
     visible: true,
-    component: HelpPage, // TODO replace with dashboard view, showing newest items of all collections
+    component: HomePage, // TODO replace with dashboard view, showing newest items of all collections
   },
   {
     id: Dashboards.LESSONS,
@@ -107,6 +108,22 @@ export const dashboardSvc: DashboardService = new DashboardService([
     route: '/les/:id',
     visible: false,
     component: LessonForm,
+  },
+  {
+    id: Dashboards.NEWS,
+    title: 'Niewsberichten',
+    icon: 'people',
+    route: '/nieuws/',
+    visible: true,
+    component: NewsList,
+  },
+  {
+    id: Dashboards.NEWS_DETAILS,
+    title: 'Niewsbericht',
+    icon: 'description',
+    route: '/nieuws/:id',
+    visible: false,
+    component: NewsForm,
   },
   {
     id: Dashboards.EDIT,
@@ -132,14 +149,14 @@ export const dashboardSvc: DashboardService = new DashboardService([
     visible: true,
     component: HelpPage,
   },
-  {
-    id: Dashboards.HOME,
-    icon: 'home',
-    default: true,
-    hasNavBar: false,
-    title: 'HOME',
-    route: '/',
-    visible: false,
-    component: HomePage,
-  },
+  // {
+  //   id: Dashboards.HOME,
+  //   icon: 'home',
+  //   default: true,
+  //   hasNavBar: false,
+  //   title: 'HOME',
+  //   route: '/',
+  //   visible: false,
+  //   component: HomePage,
+  // },
 ]);

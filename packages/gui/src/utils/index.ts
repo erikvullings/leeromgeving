@@ -1,4 +1,5 @@
 import { UIForm, IInputField, padLeft } from 'mithril-ui-form';
+import { IContent } from '../models';
 
 /**
  * Create a GUID
@@ -75,9 +76,10 @@ export const titleAndDescriptionFilter = (filterValue?: string) => {
     return () => true;
   }
   const fv = filterValue.toLowerCase() as string;
-  return (content: { title?: string; desc?: string }) =>
+  return (content: Partial<IContent>) =>
     !content.title ||
     content.title.toLowerCase().indexOf(fv) >= 0 ||
+    (content.tag && content.tag.toLowerCase().indexOf(fv) >= 0) ||
     (content.desc && content.desc.toLowerCase().indexOf(fv) >= 0);
 };
 

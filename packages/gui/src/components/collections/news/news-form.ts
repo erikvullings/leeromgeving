@@ -2,13 +2,13 @@ import M from 'materialize-css';
 import m from 'mithril';
 import { Button, FlatButton, ModalPanel } from 'mithril-materialized';
 import { LayoutForm, I18n } from 'mithril-ui-form';
-import { lessonTemplate } from '.';
+import { newsTemplate } from '.';
 import { IContent } from '../../../models';
 import { MeiosisComponent } from '../../../services';
 import { Dashboards } from '../../../services/dashboard-service';
 import { capitalizeFirstLetter } from '../../../utils';
 import { CircularSpinner } from '../../ui/preloader';
-import { LessonView } from './lesson-view';
+import { NewsView } from './news-view';
 
 // const log = console.log;
 
@@ -20,16 +20,16 @@ import { LessonView } from './lesson-view';
 //   }
 // };
 
-export const LessonForm: MeiosisComponent = () => {
+export const NewsForm: MeiosisComponent = () => {
   return {
     oninit: ({
       attrs: {
         state: {
-          lessons: { current },
+          news: { current },
         },
         actions: {
           changePage,
-          lessons: { load },
+          news: { load },
         },
       },
     }) => {
@@ -39,14 +39,14 @@ export const LessonForm: MeiosisComponent = () => {
         return;
       }
       if (!current || (id && current.$loki !== id)) {
-        changePage(Dashboards.LESSONS_DETAILS, { id });
+        changePage(Dashboards.NEWS_DETAILS, { id });
         load(id);
       }
     },
 
     view: ({ attrs: { state, actions } }) => {
       const {
-        lessons: { current, section, mode },
+        news: { current, section, mode },
       } = state;
 
       if (!current) {
@@ -58,17 +58,17 @@ export const LessonForm: MeiosisComponent = () => {
 
       if (!/mode=edit/.test(m.route.get()) && mode !== 'edit') {
         return [
-          m(LessonView, { state, actions }),
-          m(FlatButton, { label: 'EDIT', onclick: () => actions.lessons.changeMode('edit') }),
+          m(NewsView, { state, actions }),
+          m(FlatButton, { label: 'EDIT', onclick: () => actions.news.changeMode('edit') }),
         ];
       }
       const {
-        lessons: { save, del, changeSection, changeMode },
+        news: { save, del, changeSection, changeMode },
         changePage,
       } = actions;
       // const { context } = state;
       // log(event);
-      const sections = lessonTemplate
+      const sections = newsTemplate
         .filter((c) => c.type === 'section')
         .map((c) => ({
           style: 'cursor: pointer;',
@@ -114,7 +114,7 @@ export const LessonForm: MeiosisComponent = () => {
                 ),
                 m('.buttons', [
                   m(Button, {
-                    label: 'Toon les',
+                    label: 'Toon bericht',
                     iconName: 'visibility',
                     className: 'right col s12',
                     onclick: () => changeMode('view'),
@@ -127,7 +127,7 @@ export const LessonForm: MeiosisComponent = () => {
                   // }),
                   m(Button, {
                     modalId: 'delete-item',
-                    label: 'Verwijder les',
+                    label: 'Verwijder bericht',
                     iconName: 'delete',
                     class: 'red col s12',
                   }),
@@ -138,7 +138,7 @@ export const LessonForm: MeiosisComponent = () => {
           m('.col.s12.l9', [
             m(LayoutForm, {
               key: section,
-              form: lessonTemplate,
+              form: newsTemplate,
               obj: current,
               i18n: {
                 pickOne: 'Kies een',
@@ -162,7 +162,7 @@ export const LessonForm: MeiosisComponent = () => {
                 label: 'Delete',
                 onclick: async () => {
                   current.$loki && del(current.$loki);
-                  changePage(Dashboards.LESSONS);
+                  changePage(Dashboards.NEWS);
                 },
               },
               {

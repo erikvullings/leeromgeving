@@ -1,12 +1,12 @@
 import m from 'mithril';
-import { FlatButton, TextInput } from 'mithril-materialized';
+import { FlatButton, Icon, TextInput } from 'mithril-materialized';
 import { Dashboards } from '../../../services/dashboard-service';
 import { titleAndDescriptionFilter } from '../../../utils';
 import { MeiosisComponent } from '../../../services';
 import { IContent } from '../../../models';
 import { InfoCard } from '../../ui/info-card';
 
-export const LessonsList: MeiosisComponent = () => {
+export const NewsList: MeiosisComponent = () => {
   const state = {
     filterValue: '',
     policeUnitFilter: [],
@@ -27,20 +27,20 @@ export const LessonsList: MeiosisComponent = () => {
   const pageSize = 24;
 
   return {
-    oninit: ({ attrs: { actions } }) => actions.lessons.updateList(),
+    oninit: ({ attrs: { actions } }) => actions.news.updateList(),
     view: ({
       attrs: {
         state: {
-          lessons: { list },
+          news: { list },
         },
         actions,
       },
     }) => {
-      const lessons = list ? list.sort(sortByTitle) : [];
+      const news = list ? list.sort(sortByTitle) : [];
       const query = titleAndDescriptionFilter(state.filterValue);
       const page = m.route.param('page') ? +m.route.param('page') : 0;
       const filteredEvents =
-        lessons
+        news
           // .filter(
           //   (ev) => ev.published || (Auth.isAuthenticated && (Auth.roles.indexOf(Roles.ADMIN) >= 0 || Auth.canEdit(ev)))
           // )
@@ -64,20 +64,20 @@ export const LessonsList: MeiosisComponent = () => {
             [
               // Auth.isAuthenticated &&
               m(FlatButton, {
-                label: 'Nieuwe les',
+                label: 'Nieuw bericht',
                 iconName: 'add',
                 class: 'col s11 indigo darken-4 white-text',
                 style: 'margin: 1em;',
                 onclick: () => {
-                  actions.lessons.save({
+                  actions.news.save({
                     type: '',
-                    title: 'Nieuwe les',
+                    title: 'Nieuw bericht',
                     // owner: [Auth.username],
                     // published: false,
                   } as IContent);
                 },
               }),
-              m('h4.primary-text', { style: 'margin-left: 0.5em;' }, 'Filter lessen'),
+              m('h4.primary-text', { style: 'margin-left: 0.5em;' }, 'Filter berichten'),
               m(TextInput, {
                 label: 'Zoek in de tekst',
                 id: 'filter',
@@ -106,7 +106,7 @@ export const LessonsList: MeiosisComponent = () => {
         m(
           '.col.s12.l9',
           filteredEvents.map((item) =>
-            m(InfoCard, { item, dashboard: Dashboards.LESSONS_DETAILS, changePage: actions.changePage })
+            m(InfoCard, { item, dashboard: Dashboards.NEWS_DETAILS, changePage: actions.changePage })
           )
         ),
       ]);
