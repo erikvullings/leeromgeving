@@ -105,4 +105,3 @@ dist
 
 # Local repo
 *.db
-./packages/server/uploads

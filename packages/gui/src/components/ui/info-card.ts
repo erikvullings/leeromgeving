@@ -1,5 +1,6 @@
 import m, { FactoryComponent } from 'mithril';
 import { Icon } from 'mithril-materialized';
+import { SlimdownView } from 'mithril-ui-form';
 import { IContent } from '../../models';
 import { Dashboards } from '../../services';
 
@@ -22,24 +23,48 @@ export const InfoCard: FactoryComponent<{
   ) => void;
 }> = () => {
   return {
-    view: ({ attrs: { item, changePage, view, edit } }) =>
-      m('.col.s12.m6.xl4', [
+    view: ({ attrs: { item, changePage, view, edit } }) => {
+      const { rating = 0, comments = [], $loki, tag, title, desc, img, author } = item;
+      return m('.col.s12.m6.xl4', [
         m(
-          '.card.hoverable',
-          m('.card-content', { style: 'min-height: 150px;' }, [
-            item.img
-              ? m('.card-image', [
-                  m('img', { alt: item.title, src: `${process.env.SERVER}${item.img}` }),
-                  m('span.card-title', item.title),
-                ])
-              : m('span.card-title', item.title),
-            m('p.light.block-with-text', item.tag || item.desc),
+          '.card.small.hoverable.sticky-action',
+          img &&
+            m('.card-image.waves-effect.waves-block.waves-light', [
+              m('img', {
+                alt: title,
+                src: `${process.env.SERVER}${img}`,
+              }),
+              m('span.card-title', title),
+            ]),
+          m('.card-content', [
+            m('span.card-title.activator.grey-text.text-darken-4', [
+              title,
+              m(Icon, { iconName: 'more_vert', className: 'right' }),
+            ]),
+            // img
+            //   ? m('.card-image.waves-effect.waves-block.waves-light', [
+            //       m('img', {
+            //         alt: title,
+            //         src: `${process.env.SERVER}${img}`,
+            //       }),
+            //       m('span.card-title', title),
+            //     ])
+            //   : m('span.card-title', title),
+            m('p.light.block-with-text', tag),
+          ]),
+          m('.card-reveal', [
+            m('span.card-title.activator.grey-text.text-darken-4', [
+              title,
+              m(Icon, { iconName: 'more_vert', className: 'right' }),
+            ]),
+            m(SlimdownView, { md: desc }),
+            author && m('p.right', author),
           ]),
           m('.card-action', [
             m(
               'a',
               {
-                onclick: () => changePage(view, { id: item.$loki }),
+                onclick: () => changePage(view, { id: $loki }),
               },
               m(Icon, {
                 className: 'hoverable black-text',
@@ -49,25 +74,18 @@ export const InfoCard: FactoryComponent<{
             m(
               'a',
               {
-                onclick: () => changePage(edit, { id: item.$loki }),
+                onclick: () => changePage(edit, { id: $loki }),
               },
               m(Icon, {
                 className: 'hoverable black-text',
                 iconName: 'edit',
               })
             ),
-            // m(
-            //   "span.badge",
-            //   `${
-            //     item.lessons
-            //       ? item.lessons.length === 1
-            //         ? "1 lesson"
-            //         : `${item.lessons.length} lessons`
-            //       : "0 lessons"
-            //   }`
-            // ),
+            rating > 0 && m.trust(`<span class="badge">${rating}&#9733;</span>`),
+            comments.length > 0 && m.trust(`<span class="badge">${comments.length}&#9993;</span>`),
           ])
         ),
-      ]),
+      ]);
+    },
   };
 };

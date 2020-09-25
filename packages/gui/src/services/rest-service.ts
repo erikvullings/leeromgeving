@@ -74,7 +74,9 @@ const createRestServiceFactory = (apiService: string) => {
       return result;
     };
 
-    const loadFilteredList = async (props: string[] = ['$loki', 'title', 'desc', 'img', 'tag', 'author']) => {
+    const loadFilteredList = async (
+      props: string[] = ['$loki', 'title', 'author', 'desc', 'img', 'tag', 'author', 'rating', 'comments']
+    ) => {
       const filter = 'view?props=' + props.join(',');
       const result = await m.request<T[]>({
         method: 'GET',

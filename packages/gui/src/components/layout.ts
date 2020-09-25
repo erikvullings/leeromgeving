@@ -58,15 +58,15 @@ export const Layout: MeiosisComponent = () => ({
                 .getList()
                 .filter((d) => d.visible || isActive(d))
                 .map((d: IDashboard) =>
-                  m(
-                    `li${isActive(d)}`,
+                  m(`li.tooltip${isActive(d)}`, [
                     m(Icon, {
                       className: 'hoverable',
                       style: 'color: black; font-size: 2.2rem; width: 4rem;',
                       iconName: typeof d.icon === 'string' ? d.icon : d.icon(),
                       onclick: () => changePage(d.id),
-                    })
-                  )
+                    }),
+                    m('span.tooltiptext', d.title.toUpperCase()),
+                  ])
                 )
             ),
           ])

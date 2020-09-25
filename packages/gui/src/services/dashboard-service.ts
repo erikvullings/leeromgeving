@@ -98,8 +98,8 @@ export const dashboardSvc: DashboardService = new DashboardService([
   },
   {
     id: Dashboards.LESSONS,
-    title: 'Lessons-learnt',
-    icon: 'forum',
+    title: 'Best practices',
+    icon: 'build',
     route: '/les/',
     visible: true,
     component: LessonsList,
@@ -122,7 +122,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   },
   {
     id: Dashboards.NEWS,
-    title: 'Niewsberichten',
+    title: 'Nieuwsberichten',
     icon: 'people',
     route: '/nieuws/',
     visible: true,
@@ -130,7 +130,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   },
   {
     id: Dashboards.NEWS_VIEW,
-    title: 'Niewsbericht',
+    title: 'Nieuwsbericht',
     icon: 'visibility',
     route: '/nieuws/:id',
     visible: false,
@@ -138,7 +138,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   },
   {
     id: Dashboards.NEWS_EDIT,
-    title: 'Niewsbericht',
+    title: 'Nieuwsbericht',
     icon: 'edit',
     route: '/nieuws/bewerken/:id',
     visible: false,

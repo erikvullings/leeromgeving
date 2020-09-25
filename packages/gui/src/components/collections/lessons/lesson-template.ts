@@ -24,6 +24,7 @@ export const lessonTemplate = [
     id: 'img',
     label: 'Foto',
     type: 'file',
+    options: [{ id: '.gif' }, { id: '.jpg' }, { id: '.jpeg' }, { id: '.png' }, { id: '.svg' }],
     url: `${process.env.SERVER}/upload/lessen`,
   },
 ] as UIForm;

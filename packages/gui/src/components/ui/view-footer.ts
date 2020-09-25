@@ -67,6 +67,7 @@ export const ViewFooter: FactoryComponent<{
             'li',
             m(FlatButton, {
               label: 'Nieuwe reactie',
+              iconName: 'add',
               onclick: () => {
                 const comment = { created: new Date().valueOf(), desc: '', author: '', rating: 0 } as IComment;
                 if (current.comments) {
@@ -78,11 +79,11 @@ export const ViewFooter: FactoryComponent<{
               },
             })
           ),
-          m('li', m(FlatButton, { label: 'EDIT', onclick: () => changePage(edit, { id: current.$loki }) })),
+          m('li', m(FlatButton, { iconName: 'edit', onclick: () => changePage(edit, { id: current.$loki }) })),
           m(
             'li',
             m(FlatButton, {
-              label: 'UP',
+              iconName: 'thumb_up',
               onclick: () => {
                 current.rating = (current.rating || 0) + 1;
                 save(current);
@@ -92,7 +93,7 @@ export const ViewFooter: FactoryComponent<{
           m(
             'li',
             m(FlatButton, {
-              label: 'DOWN',
+              iconName: 'thumb_down',
               onclick: () => {
                 current.rating = (current.rating || 0) - 1;
                 save(current);
