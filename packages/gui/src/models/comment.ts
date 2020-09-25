@@ -4,4 +4,6 @@ export interface IComment {
   rating?: number;
   /** Created date as number */
   created: number;
+  /** Last edit */
+  mutated?: number;
 }

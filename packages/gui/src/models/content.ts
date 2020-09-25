@@ -1,3 +1,4 @@
+import { IComment } from './comment';
 import { ILokiObj } from './loki-object';
 
 export interface IContent extends ILokiObj {
@@ -8,4 +9,5 @@ export interface IContent extends ILokiObj {
   img?: string;
   tag?: string;
   desc?: string;
+  comments?: IComment[];
 }

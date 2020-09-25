@@ -4,6 +4,7 @@ dependencies:
   material-icons: 0.3.1
   materialize-css: 1.0.0
   mithril: 2.0.4
+  mithril-contenteditable: 0.1.4
   mithril-leaflet: 0.4.3_491ddecb47f7cd12dfa6f425d3d35f4a
   mithril-materialized: 0.16.4_f3d9df6f4766fd28b6cfb8072ccbc3ca
   mithril-ui-form: 0.8.6_356b82da00453db109848b0ac283c7ff
@@ -3447,6 +3448,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+  /mithril-contenteditable/0.1.4:
+    dev: false
+    resolution:
+      integrity: sha512-mjNIZYpqU4t11EzCoTzY7rec0nQtyPvU7Y5WewDLf2YIAfaKkB82gyHq4tQ8MmhZpLO8y3BueuoGIO69l54vSQ==
   /mithril-leaflet/0.4.3_491ddecb47f7cd12dfa6f425d3d35f4a:
     dependencies:
       leaflet: 1.7.1
@@ -5468,6 +5473,7 @@ specifiers:
   material-icons: ^0.3.1
   materialize-css: ^1.0.0
   mithril: ^2.0.4
+  mithril-contenteditable: ^0.1.4
   mithril-leaflet: ^0.4.3
   mithril-materialized: ^0.16.4
   mithril-ui-form: ^0.8.6
