@@ -41,15 +41,6 @@ export const InfoCard: FactoryComponent<{
               title,
               m(Icon, { iconName: 'more_vert', className: 'right' }),
             ]),
-            // img
-            //   ? m('.card-image.waves-effect.waves-block.waves-light', [
-            //       m('img', {
-            //         alt: title,
-            //         src: `${process.env.SERVER}${img}`,
-            //       }),
-            //       m('span.card-title', title),
-            //     ])
-            //   : m('span.card-title', title),
             m('p.light.block-with-text', tag),
           ]),
           m('.card-reveal', [

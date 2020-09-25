@@ -6,6 +6,8 @@ import { CircularSpinner } from '../../ui/preloader';
 import { IContent } from '../../../models';
 import { newsTemplate } from '.';
 import { ViewFooter } from '../../ui/view-footer';
+import { SlimdownView } from 'mithril-ui-form';
+import { TitleRating } from '../../ui';
 
 export const NewsView: MeiosisComponent = () => {
   const state = {
@@ -30,14 +32,15 @@ export const NewsView: MeiosisComponent = () => {
     },
     view: ({
       attrs: {
-        state: { news },
+        state: {
+          news: { current },
+        },
         actions: {
           changePage,
           news: { save },
         },
       },
     }) => {
-      const { current } = news;
       const { resolveObj } = state;
       // console.log(JSON.stringify(item, null, 2));
       const resolved = resolveObj<IContent>(current);
@@ -52,10 +55,23 @@ export const NewsView: MeiosisComponent = () => {
         return undefined;
       }
 
-      const { title, desc } = current;
+      const { title, desc, author, img } = current;
 
       return [
-        m('.item-view', m('.row', [m('.col.s6', title), m('.col.s6', desc)])),
+        m(
+          '.item-view',
+          m('.row', [
+            m(TitleRating, { content: current }),
+            img &&
+              m('img.materialboxed', {
+                style: 'max-width: 100%; max-height: 300px; margin: 0 auto',
+                alt: title,
+                src: `${process.env.SERVER}${img}`,
+                oncreate: ({ dom }) => M.Materialbox.init(dom),
+              }),
+            m('.col.s12', m(SlimdownView, { md: desc })),
+          ])
+        ),
         m(ViewFooter, {
           current,
           edit: Dashboards.NEWS_EDIT,

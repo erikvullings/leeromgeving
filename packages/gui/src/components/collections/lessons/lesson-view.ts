@@ -9,6 +9,7 @@ import { SlimdownView } from 'mithril-ui-form';
 import { LessonTypes } from './lesson-template';
 import { FlatButton } from 'mithril-materialized';
 import { ViewFooter } from '../../ui/view-footer';
+import { TitleRating } from '../../ui/title-rating';
 
 export const LessonView: MeiosisComponent = () => {
   const state = {
@@ -56,7 +57,7 @@ export const LessonView: MeiosisComponent = () => {
         return undefined;
       }
 
-      const { title, type, desc, tag, rating, solution, img, author, remarks } = current;
+      const { title, type, desc, tag, solution, img, author, remarks } = current;
 
       const convertedTypes = type
         ? type instanceof Array
@@ -77,11 +78,7 @@ export const LessonView: MeiosisComponent = () => {
         m(
           '.item-view',
           m('.row', [
-            m(
-              'h3.center-align',
-              m.trust(`${title}${rating ? ` (${rating}<span style="color: gold">&#9733;</span>)` : ''}`)
-            ),
-            author && m('b.col.s12.center-align', author),
+            m(TitleRating, { content: current }),
             (tag || type) && m('i.col.s12.center-align', `${tag}${type ? ` (categorie: ${convertedTypes})` : ''}`),
             img &&
               m('img.materialboxed', {

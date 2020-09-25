@@ -99,7 +99,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   {
     id: Dashboards.LESSONS,
     title: 'Best practices',
-    icon: 'build',
+    icon: 'feedback',
     route: '/les/',
     visible: true,
     component: LessonsList,
