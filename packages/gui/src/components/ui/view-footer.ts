@@ -7,7 +7,7 @@ import { IComment } from '../../models/comment';
 import { SlimdownView } from 'mithril-ui-form';
 
 export const ViewFooter: FactoryComponent<{
-  current: Partial<IContent>;
+  content: Partial<IContent>;
   edit: Dashboards;
   changePage: (d: Dashboards, params: { [key: string]: string | number | undefined }) => void;
   save: (item: Partial<IContent>) => void;
@@ -15,8 +15,8 @@ export const ViewFooter: FactoryComponent<{
   let editCommentIndex = -1;
 
   return {
-    view: ({ attrs: { current, edit, changePage, save } }) => {
-      const { comments = [] } = current;
+    view: ({ attrs: { content, edit, changePage, save } }) => {
+      const { comments = [] } = content;
       return [
         m(
           'ul',
@@ -39,7 +39,7 @@ export const ViewFooter: FactoryComponent<{
                     className: 'col s3',
                     onclick: () => {
                       editCommentIndex = -1;
-                      save(current);
+                      save(content);
                     },
                   }),
                   m(FlatButton, {
@@ -47,9 +47,9 @@ export const ViewFooter: FactoryComponent<{
                     iconName: 'delete',
                     className: 'col s3',
                     onclick: () => {
-                      current.comments?.splice(i, 1);
+                      content.comments?.splice(i, 1);
                       editCommentIndex = -1;
-                      save(current);
+                      save(content);
                     },
                   })
                 )
@@ -70,23 +70,23 @@ export const ViewFooter: FactoryComponent<{
               iconName: 'add',
               onclick: () => {
                 const comment = { created: new Date().valueOf(), desc: '', author: '', rating: 0 } as IComment;
-                if (current.comments) {
-                  current.comments.push(comment);
+                if (content.comments) {
+                  content.comments.push(comment);
                 } else {
-                  current.comments = [comment];
+                  content.comments = [comment];
                 }
-                editCommentIndex = current.comments.length - 1;
+                editCommentIndex = content.comments.length - 1;
               },
             })
           ),
-          m('li', m(FlatButton, { iconName: 'edit', onclick: () => changePage(edit, { id: current.$loki }) })),
+          m('li', m(FlatButton, { iconName: 'edit', onclick: () => changePage(edit, { id: content.$loki }) })),
           m(
             'li',
             m(FlatButton, {
               iconName: 'thumb_up',
               onclick: () => {
-                current.rating = (current.rating || 0) + 1;
-                save(current);
+                content.rating = (content.rating || 0) + 1;
+                save(content);
               },
             })
           ),
@@ -95,8 +95,8 @@ export const ViewFooter: FactoryComponent<{
             m(FlatButton, {
               iconName: 'thumb_down',
               onclick: () => {
-                current.rating = (current.rating || 0) - 1;
-                save(current);
+                content.rating = (content.rating || 0) - 1;
+                save(content);
               },
             })
           ),

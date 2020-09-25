@@ -7,9 +7,9 @@ import { IContent } from '../../../models';
 import { lessonTemplate } from '.';
 import { SlimdownView } from 'mithril-ui-form';
 import { LessonTypes } from './lesson-template';
-import { FlatButton } from 'mithril-materialized';
 import { ViewFooter } from '../../ui/view-footer';
 import { TitleRating } from '../../ui/title-rating';
+import { ImageBox } from '../../ui';
 
 export const LessonView: MeiosisComponent = () => {
   const state = {
@@ -35,7 +35,7 @@ export const LessonView: MeiosisComponent = () => {
     view: ({
       attrs: {
         state: {
-          lessons: { current },
+          lessons: { current: content },
         },
         actions: {
           changePage,
@@ -45,9 +45,9 @@ export const LessonView: MeiosisComponent = () => {
     }) => {
       const { resolveObj } = state;
       // console.log(JSON.stringify(item, null, 2));
-      const resolved = resolveObj<IContent>(current);
+      const resolved = resolveObj<IContent>(content);
       // console.log(JSON.stringify(resolved, null, 2));
-      if (!current) {
+      if (!content) {
         return m(CircularSpinner, {
           className: 'center-align',
           style: 'margin-top: 20%;',
@@ -57,7 +57,7 @@ export const LessonView: MeiosisComponent = () => {
         return undefined;
       }
 
-      const { title, type, desc, tag, solution, img, author, remarks } = current;
+      const { type, desc, tag, solution, remarks } = content;
 
       const convertedTypes = type
         ? type instanceof Array
@@ -78,15 +78,9 @@ export const LessonView: MeiosisComponent = () => {
         m(
           '.item-view',
           m('.row', [
-            m(TitleRating, { content: current }),
+            m(TitleRating, { content }),
             (tag || type) && m('i.col.s12.center-align', `${tag}${type ? ` (categorie: ${convertedTypes})` : ''}`),
-            img &&
-              m('img.materialboxed', {
-                style: 'max-width: 100%; max-height: 300px; margin: 0 auto',
-                alt: title,
-                src: `${process.env.SERVER}${img}`,
-                oncreate: ({ dom }) => M.Materialbox.init(dom),
-              }),
+            m(ImageBox, { content }),
             desc && [m('h4', 'Probleem omschrijving'), m(SlimdownView, { md: desc })],
             solution && [m('h4', 'Oplossing'), m(SlimdownView, { md: solution })],
             remarks && [m('h4', 'Opmerkingen'), m(SlimdownView, { md: remarks })],
@@ -94,7 +88,7 @@ export const LessonView: MeiosisComponent = () => {
         ),
 
         m(ViewFooter, {
-          current,
+          content: content,
           edit: Dashboards.LESSON_EDIT,
           changePage,
           save,
