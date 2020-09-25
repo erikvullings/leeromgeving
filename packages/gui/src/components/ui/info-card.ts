@@ -5,7 +5,8 @@ import { Dashboards } from '../../services';
 
 export const InfoCard: FactoryComponent<{
   item: Partial<IContent>;
-  dashboard: Dashboards;
+  view: Dashboards;
+  edit: Dashboards;
   changePage: (
     page: Dashboards,
     params?:
@@ -21,7 +22,7 @@ export const InfoCard: FactoryComponent<{
   ) => void;
 }> = () => {
   return {
-    view: ({ attrs: { item, changePage, dashboard } }) =>
+    view: ({ attrs: { item, changePage, view, edit } }) =>
       m('.col.s12.m6.xl4', [
         m(
           '.card.hoverable',
@@ -38,7 +39,7 @@ export const InfoCard: FactoryComponent<{
             m(
               'a',
               {
-                onclick: () => changePage(dashboard, { id: item.$loki }, { mode: 'view' }),
+                onclick: () => changePage(view, { id: item.$loki }),
               },
               m(Icon, {
                 className: 'hoverable black-text',
@@ -48,7 +49,7 @@ export const InfoCard: FactoryComponent<{
             m(
               'a',
               {
-                onclick: () => changePage(dashboard, { id: item.$loki }, { mode: 'edit' }),
+                onclick: () => changePage(edit, { id: item.$loki }),
               },
               m(Icon, {
                 className: 'hoverable black-text',

@@ -1,12 +1,14 @@
 import m from 'mithril';
 // import { labelResolver } from 'mithril-ui-form';
 import { labelResolver } from '../../../utils';
-import { MeiosisComponent } from '../../../services';
+import { Dashboards, MeiosisComponent } from '../../../services';
 import { CircularSpinner } from './../../ui/preloader';
 import { IContent } from '../../../models';
 import { lessonTemplate } from '.';
 import { SlimdownView } from 'mithril-ui-form';
 import { LessonTypes } from './lesson-template';
+import { FlatButton } from 'mithril-materialized';
+import { ViewFooter } from '../../ui/view-footer';
 
 export const LessonView: MeiosisComponent = () => {
   const state = {
@@ -31,10 +33,15 @@ export const LessonView: MeiosisComponent = () => {
     },
     view: ({
       attrs: {
-        state: { lessons },
+        state: {
+          lessons: { current },
+        },
+        actions: {
+          changePage,
+          lessons: { save },
+        },
       },
     }) => {
-      const { current } = lessons;
       const { resolveObj } = state;
       // console.log(JSON.stringify(item, null, 2));
       const resolved = resolveObj<IContent>(current);
@@ -66,27 +73,36 @@ export const LessonView: MeiosisComponent = () => {
               .shift()
         : undefined;
 
-      return m(
-        '.item-view',
-        m('.row', [
-          m(
-            'h3.center-align',
-            m.trust(`${title}${rating ? ` (${rating}<span style="color: gold">&#9733;</span>)` : ''}`)
-          ),
-          author && m('b.col.s12.center-align', author),
-          (tag || type) && m('i.col.s12.center-align', `${tag}${type ? ` (categorie: ${convertedTypes})` : ''}`),
-          img &&
-            m('img.materialboxed', {
-              style: 'max-width: 100%; max-height: 300px; margin: 0 auto',
-              alt: title,
-              src: `${process.env.SERVER}${img}`,
-              oncreate: ({ dom }) => M.Materialbox.init(dom),
-            }),
-          desc && [m('h4', 'Probleem omschrijving'), m(SlimdownView, { md: desc })],
-          solution && [m('h4', 'Oplossing'), m(SlimdownView, { md: solution })],
-          remarks && [m('h4', 'Opmerkingen'), m(SlimdownView, { md: remarks })],
-        ])
-      );
+      return [
+        m(
+          '.item-view',
+          m('.row', [
+            m(
+              'h3.center-align',
+              m.trust(`${title}${rating ? ` (${rating}<span style="color: gold">&#9733;</span>)` : ''}`)
+            ),
+            author && m('b.col.s12.center-align', author),
+            (tag || type) && m('i.col.s12.center-align', `${tag}${type ? ` (categorie: ${convertedTypes})` : ''}`),
+            img &&
+              m('img.materialboxed', {
+                style: 'max-width: 100%; max-height: 300px; margin: 0 auto',
+                alt: title,
+                src: `${process.env.SERVER}${img}`,
+                oncreate: ({ dom }) => M.Materialbox.init(dom),
+              }),
+            desc && [m('h4', 'Probleem omschrijving'), m(SlimdownView, { md: desc })],
+            solution && [m('h4', 'Oplossing'), m(SlimdownView, { md: solution })],
+            remarks && [m('h4', 'Opmerkingen'), m(SlimdownView, { md: remarks })],
+          ])
+        ),
+
+        m(ViewFooter, {
+          current,
+          edit: Dashboards.LESSON_EDIT,
+          changePage,
+          save,
+        }),
+      ];
     },
   };
 };

@@ -1,35 +1,28 @@
 import M from 'materialize-css';
 import m from 'mithril';
 import { Button, FlatButton, ModalPanel } from 'mithril-materialized';
-import { LayoutForm, I18n } from 'mithril-ui-form';
-import { newsTemplate } from '.';
-import { IContent } from '../../../models';
-import { MeiosisComponent } from '../../../services';
-import { Dashboards } from '../../../services/dashboard-service';
-import { capitalizeFirstLetter } from '../../../utils';
-import { CircularSpinner } from '../../ui/preloader';
-import { NewsView } from './news-view';
+import { LayoutForm, I18n, UIForm } from 'mithril-ui-form';
+import { IContent } from '../../models';
+import { MeiosisComponent, Dashboards, CollectionNames } from '../../services';
+import { capitalizeFirstLetter } from '../../utils';
+import { CircularSpinner } from '.';
 
-// const log = console.log;
-
-// const close = async (e?: UIEvent, changePage: (id: Dashboards) => void) => {
-//   log('closing...');
-//   changePage(Dashboards.OVERVIEW);
-//   if (e) {
-//     e.preventDefault();
-//   }
-// };
-
-export const NewsForm: MeiosisComponent = () => {
+export const DefaultForm = (
+  template: UIForm,
+  collectionName: CollectionNames,
+  name: string,
+  overviewDashboard: Dashboards,
+  viewDashboard: Dashboards
+): MeiosisComponent => () => {
   return {
     oninit: ({
       attrs: {
         state: {
-          news: { current },
+          [collectionName]: { current },
         },
         actions: {
           changePage,
-          news: { load },
+          [collectionName]: { load },
         },
       },
     }) => {
@@ -43,11 +36,17 @@ export const NewsForm: MeiosisComponent = () => {
       }
     },
 
-    view: ({ attrs: { state, actions } }) => {
-      const {
-        news: { current, section, mode },
-      } = state;
-
+    view: ({
+      attrs: {
+        state: {
+          [collectionName]: { current, section },
+        },
+        actions: {
+          [collectionName]: { save, del, changeSection },
+          changePage,
+        },
+      },
+    }) => {
       if (!current) {
         return m(CircularSpinner, {
           className: 'center-align',
@@ -55,27 +54,13 @@ export const NewsForm: MeiosisComponent = () => {
         });
       }
 
-      if (mode === 'view' || (!/mode=edit/.test(m.route.get()) && mode !== 'edit')) {
-        return [
-          m(NewsView, { state, actions }),
-          m(FlatButton, { label: 'EDIT', onclick: () => actions.news.changeMode('edit') }),
-        ];
-      }
-      const {
-        news: { save, del, changeSection, changeMode },
-        changePage,
-      } = actions;
-      // const { context } = state;
-      // log(event);
-      const sections = newsTemplate
+      const sections = template
         .filter((c) => c.type === 'section')
         .map((c) => ({
           style: 'cursor: pointer;',
           id: c.id,
           title: c.label || capitalizeFirstLetter(c.id),
         }));
-      // const sectionId = section || m.route.param('section') || (sections.length > 0 ? sections[0].id : undefined);
-      // console.log(JSON.stringify(item?.location, null, 2));
       return (
         current &&
         m('.row', [
@@ -94,29 +79,18 @@ export const NewsForm: MeiosisComponent = () => {
                 ...sections.map((s) =>
                   m(
                     'li',
-                    // TODO REPLACE with a button and use the action.changeSection
-                    m(
-                      FlatButton,
-                      {
-                        label: s.title,
-                        onclick: changeSection(s.id as string),
-                      }
-                      // m.route.Link,
-                      // {
-                      //   href: dashboardSvc
-                      //     .route(Dashboards.LESSONS_DETAILS)
-                      //     .replace(':id', `${current.$loki}?section=${s.id}`),
-                      // },
-                      // m('span.primary-text', s.title)
-                    )
+                    m(FlatButton, {
+                      label: s.title,
+                      onclick: changeSection(s.id as string),
+                    })
                   )
                 ),
                 m('.buttons', [
                   m(Button, {
-                    label: 'Toon bericht',
+                    label: `Toon ${name}`,
                     iconName: 'visibility',
                     className: 'right col s12',
-                    onclick: () => changeMode('view'),
+                    onclick: () => changePage(viewDashboard, { id: current.$loki }),
                   }),
                   // m(Button, {
                   //   label: 'Save event',
@@ -126,7 +100,7 @@ export const NewsForm: MeiosisComponent = () => {
                   // }),
                   m(Button, {
                     modalId: 'delete-item',
-                    label: 'Verwijder bericht',
+                    label: `Verwijder ${name}`,
                     iconName: 'delete',
                     class: 'red col s12',
                   }),
@@ -137,7 +111,7 @@ export const NewsForm: MeiosisComponent = () => {
           m('.col.s12.l9', [
             m(LayoutForm, {
               key: section,
-              form: newsTemplate,
+              form: template,
               obj: current,
               i18n: {
                 pickOne: 'Kies een',
@@ -153,15 +127,15 @@ export const NewsForm: MeiosisComponent = () => {
           ]),
           m(ModalPanel, {
             id: 'delete-item',
-            title: 'Les verwijderen',
-            description: 'Wil je deze les daadwerkelijk verwijderen - er is geen weg terug?',
+            title: `Verwijder ${name}`,
+            description: 'Weet je het zeker? Er is geen weg terug!',
             options: { opacity: 0.7 },
             buttons: [
               {
                 label: 'Delete',
                 onclick: async () => {
                   current.$loki && del(current.$loki);
-                  changePage(Dashboards.NEWS);
+                  changePage(overviewDashboard);
                 },
               },
               {

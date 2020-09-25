@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { FlatButton, Icon, TextInput } from 'mithril-materialized';
+import { FlatButton, TextInput } from 'mithril-materialized';
 import { Dashboards } from '../../../services/dashboard-service';
 import { titleAndDescriptionFilter } from '../../../utils';
 import { MeiosisComponent } from '../../../services';
@@ -106,7 +106,12 @@ export const NewsList: MeiosisComponent = () => {
         m(
           '.col.s12.l9',
           filteredEvents.map((item) =>
-            m(InfoCard, { item, dashboard: Dashboards.NEWS_DETAILS, changePage: actions.changePage })
+            m(InfoCard, {
+              item,
+              view: Dashboards.NEWS_VIEW,
+              edit: Dashboards.NEWS_EDIT,
+              changePage: actions.changePage,
+            })
           )
         ),
       ]);

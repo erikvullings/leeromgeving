@@ -16,13 +16,15 @@ export const HomePage: MeiosisComponent = () => ({
     m(
       '.row',
       m('.col.s12', [
-        m('h5', 'Lessen...'),
+        m('h5', 'Best practices...'),
         m(
           '.row',
           m(
             '.col.s12',
             lessons.list &&
-              lessons.list.map((n) => m(InfoCard, { item: n, dashboard: Dashboards.LESSONS_DETAILS, changePage }))
+              lessons.list.map((n) =>
+                m(InfoCard, { item: n, view: Dashboards.LESSON_VIEW, edit: Dashboards.LESSON_EDIT, changePage })
+              )
           )
         ),
         m('h5', 'Nieuwsberichten...'),
@@ -30,7 +32,10 @@ export const HomePage: MeiosisComponent = () => ({
           '.row',
           m(
             '.col.s12',
-            news.list && news.list.map((n) => m(InfoCard, { item: n, dashboard: Dashboards.NEWS_DETAILS, changePage }))
+            news.list &&
+              news.list.map((n) =>
+                m(InfoCard, { item: n, view: Dashboards.NEWS_VIEW, edit: Dashboards.NEWS_EDIT, changePage })
+              )
           )
         ),
       ])

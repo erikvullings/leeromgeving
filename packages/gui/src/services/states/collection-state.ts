@@ -6,7 +6,6 @@ import Stream from 'mithril/stream';
 export type CollectionItemMode = 'view' | 'edit' | 'loading';
 
 export type CollectionType<T extends IContent> = {
-  mode?: CollectionItemMode;
   section?: string;
   current?: Partial<T>;
   list?: Partial<T>[];
@@ -26,8 +25,6 @@ export type CollectionActions<T extends IContent> = {
   del: (id: number) => void;
   /** Change section */
   changeSection: (sectionId: string) => void;
-  /** Change to view or edit mode */
-  changeMode: (mode?: CollectionItemMode) => void;
 };
 
 /** All actions that can be invoked per collection */
@@ -49,7 +46,7 @@ export const collectionFactory = <T extends IContent>(collectionName: Collection
         list: [] as T[],
       } as CollectionType<T>,
     } as CollectionsModel<T>,
-    actions: (us, states) => {
+    actions: (us, _states) => {
       return {
         [collectionName]: {
           updateList: async () => {
@@ -78,7 +75,6 @@ export const collectionFactory = <T extends IContent>(collectionName: Collection
             us({ [collectionName]: { current: undefined } });
           },
           changeSection: (section: string) => us({ [collectionName]: { section } }),
-          changeMode: (mode?: CollectionItemMode) => us({ [collectionName]: { mode } }),
         } as CollectionActions<T>,
       } as CollectionsActions<T>;
     },

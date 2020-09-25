@@ -2,8 +2,9 @@ import m, { RouteDefs } from 'mithril';
 import { IDashboard } from '../models';
 import { actions, states } from './meiosis';
 import { Layout } from '../components/layout';
-import { AboutPage, HelpPage, HomePage, LessonsList, LessonForm } from '../components';
-import { NewsForm, NewsList } from '../components/collections/news';
+import { AboutPage, HelpPage, HomePage, LessonsList, lessonTemplate, LessonView } from '../components';
+import { NewsList, newsTemplate, NewsView } from '../components/collections/news';
+import { DefaultForm } from '../components/ui';
 
 export const enum Dashboards {
   HOME = 'HOME',
@@ -13,9 +14,11 @@ export const enum Dashboards {
   EDIT = 'EDIT',
   USER = 'USER',
   LESSONS = 'LESSONS',
-  LESSONS_DETAILS = 'LESSONS_DETAILS',
+  LESSON_VIEW = 'LESSON_VIEW',
+  LESSON_EDIT = 'LESSON_EDIT',
   NEWS = 'NEWS',
-  NEWS_DETAILS = 'NEWS_DETAILS',
+  NEWS_VIEW = 'NEWS_VIEW',
+  NEWS_EDIT = 'NEWS_EDIT',
   TIPS = 'TIPS',
   TIPS_DETAILS = 'TIPS_DETAILS',
   SCENARIOS = 'SCENARIOS',
@@ -102,12 +105,20 @@ export const dashboardSvc: DashboardService = new DashboardService([
     component: LessonsList,
   },
   {
-    id: Dashboards.LESSONS_DETAILS,
-    title: 'Lessons-learnt',
-    icon: 'book',
+    id: Dashboards.LESSON_VIEW,
+    title: 'Best practice',
+    icon: 'visibility',
     route: '/les/:id',
     visible: false,
-    component: LessonForm,
+    component: LessonView,
+  },
+  {
+    id: Dashboards.LESSON_EDIT,
+    title: 'Bewerken',
+    icon: 'edit',
+    route: '/les/bewerken/:id',
+    visible: false,
+    component: DefaultForm(lessonTemplate, 'lessons', 'les', Dashboards.LESSONS, Dashboards.LESSON_VIEW),
   },
   {
     id: Dashboards.NEWS,
@@ -118,20 +129,20 @@ export const dashboardSvc: DashboardService = new DashboardService([
     component: NewsList,
   },
   {
-    id: Dashboards.NEWS_DETAILS,
+    id: Dashboards.NEWS_VIEW,
     title: 'Niewsbericht',
-    icon: 'description',
+    icon: 'visibility',
     route: '/nieuws/:id',
     visible: false,
-    component: NewsForm,
+    component: NewsView,
   },
   {
-    id: Dashboards.EDIT,
-    title: 'BEWERKEN',
+    id: Dashboards.NEWS_EDIT,
+    title: 'Niewsbericht',
     icon: 'edit',
-    route: '/bewerken/:id',
+    route: '/nieuws/bewerken/:id',
     visible: false,
-    component: LessonForm,
+    component: DefaultForm(newsTemplate, 'news', 'bericht', Dashboards.NEWS, Dashboards.NEWS_VIEW),
   },
   {
     id: Dashboards.ABOUT,

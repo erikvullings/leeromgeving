@@ -1,10 +1,11 @@
 import m from 'mithril';
 // import { labelResolver } from 'mithril-ui-form';
 import { labelResolver } from '../../../utils';
-import { MeiosisComponent } from '../../../services';
+import { Dashboards, MeiosisComponent } from '../../../services';
 import { CircularSpinner } from '../../ui/preloader';
 import { IContent } from '../../../models';
 import { newsTemplate } from '.';
+import { ViewFooter } from '../../ui/view-footer';
 
 export const NewsView: MeiosisComponent = () => {
   const state = {
@@ -30,6 +31,10 @@ export const NewsView: MeiosisComponent = () => {
     view: ({
       attrs: {
         state: { news },
+        actions: {
+          changePage,
+          news: { save },
+        },
       },
     }) => {
       const { current } = news;
@@ -49,7 +54,15 @@ export const NewsView: MeiosisComponent = () => {
 
       const { title, desc } = current;
 
-      return m('.item-view', m('.row', [m('.col.s6', title), m('.col.s6', desc)]));
+      return [
+        m('.item-view', m('.row', [m('.col.s6', title), m('.col.s6', desc)])),
+        m(ViewFooter, {
+          current,
+          edit: Dashboards.NEWS_EDIT,
+          changePage,
+          save,
+        }),
+      ];
     },
   };
 };

@@ -21,7 +21,7 @@ import {
  */
 
 /** Names of the collections */
-export type CollectionNames = 'lessons' | 'tips' | 'news' | 'scenarios' | 'dilemmas';
+export type CollectionNames = 'lessons' | 'tips' | 'news' | 'scenarios' | 'dilemmas' | 'issues';
 
 const lessonsCollection = collectionFactory<ILesson>('lessons');
 const newsCollection = collectionFactory<IContent>('news');

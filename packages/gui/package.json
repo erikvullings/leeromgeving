@@ -31,7 +31,7 @@
     "mithril": "^2.0.4",
     "mithril-leaflet": "^0.4.3",
     "mithril-materialized": "^0.16.4",
-    "mithril-ui-form": "^0.8.5",
+    "mithril-ui-form": "^0.8.6",
     "slimdown-js": "^0.3.0",
     "rfc6902": "^4.0.0"
   },

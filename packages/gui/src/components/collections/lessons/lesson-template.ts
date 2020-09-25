@@ -12,7 +12,12 @@ export const lessonTemplate = [
   { id: 'author', className: 'col s4', label: 'Auteur(s)', type: 'text' },
   { id: 'type', className: 'col s4', label: 'Soort les', type: 'select', multiple: true, options: LessonTypes },
   { id: 'tag', label: 'Tagline', type: 'text', placeholder: 'Korte samenvatting...' },
-  { id: 'desc', label: 'Probleem omschrijving', type: 'textarea' },
+  {
+    id: 'desc',
+    label: 'Situatie omschrijving',
+    placeholder: 'Beschrijf kort de situatie en het probleem...',
+    type: 'textarea',
+  },
   { id: 'solution', label: 'Oplossing', type: 'textarea' },
   { id: 'remarks', label: 'Opmerkingen', type: 'textarea' },
   {
