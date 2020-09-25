@@ -2,12 +2,10 @@ import m from 'mithril';
 // import { labelResolver } from 'mithril-ui-form';
 import { labelResolver } from '../../../utils';
 import { Dashboards, MeiosisComponent } from '../../../services';
-import { CircularSpinner } from '../../ui/preloader';
+import { CircularSpinner, ViewFooter, TitleRating, ImageBox } from './../../ui';
 import { IContent } from '../../../models';
 import { newsTemplate } from '.';
-import { ViewFooter } from '../../ui/view-footer';
 import { SlimdownView } from 'mithril-ui-form';
-import { ImageBox, TitleRating } from '../../ui';
 
 export const NewsView: MeiosisComponent = () => {
   const state = {

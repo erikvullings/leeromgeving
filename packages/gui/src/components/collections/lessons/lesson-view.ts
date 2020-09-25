@@ -2,14 +2,10 @@ import m from 'mithril';
 // import { labelResolver } from 'mithril-ui-form';
 import { labelResolver } from '../../../utils';
 import { Dashboards, MeiosisComponent } from '../../../services';
-import { CircularSpinner } from './../../ui/preloader';
+import { CircularSpinner, ViewFooter, TitleRating, ImageBox } from './../../ui';
 import { IContent } from '../../../models';
-import { lessonTemplate } from '.';
+import { LessonTypes, lessonTemplate } from '.';
 import { SlimdownView } from 'mithril-ui-form';
-import { LessonTypes } from './lesson-template';
-import { ViewFooter } from '../../ui/view-footer';
-import { TitleRating } from '../../ui/title-rating';
-import { ImageBox } from '../../ui';
 
 export const LessonView: MeiosisComponent = () => {
   const state = {
