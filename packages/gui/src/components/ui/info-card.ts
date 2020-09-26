@@ -46,7 +46,7 @@ export const InfoCard: FactoryComponent<{
           m('.card-reveal', [
             m('span.card-title.activator.grey-text.text-darken-4', [
               title,
-              m(Icon, { iconName: 'more_vert', className: 'right' }),
+              m(Icon, { iconName: 'close', className: 'right' }),
             ]),
             m(SlimdownView, { md: desc }),
             author && m('p.right', author),
