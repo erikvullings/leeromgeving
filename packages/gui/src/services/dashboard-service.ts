@@ -12,6 +12,9 @@ import {
   LessonsList,
   lessonTemplate,
   LessonView,
+  TipsList,
+  tipsTemplate,
+  TipsView,
 } from '../components';
 import { NewsList, newsTemplate, NewsView } from '../components/collections/news';
 import { DefaultForm } from '../components/ui';
@@ -33,7 +36,8 @@ export const enum Dashboards {
   DILEMMAS_VIEW = 'DILEMMAS_VIEW',
   DILEMMAS_EDIT = 'DILEMMAS_EDIT',
   TIPS = 'TIPS',
-  TIPS_DETAILS = 'TIPS_DETAILS',
+  TIPS_VIEW = 'TIPS_VIEW',
+  TIPS_EDIT = 'TIPS_EDIT',
   SCENARIOS = 'SCENARIOS',
   SCENARIOS_DETAILS = 'SCENARIOS_DETAILS',
 }
@@ -179,6 +183,30 @@ export const dashboardSvc: DashboardService = new DashboardService([
     route: '/dilemma/bewerken/:id',
     visible: false,
     component: DefaultForm(dilemmasTemplate, 'dilemmas', 'dilemma', Dashboards.DILEMMAS, Dashboards.DILEMMAS_VIEW),
+  },
+  {
+    id: Dashboards.TIPS,
+    title: 'Tips & Tricks',
+    icon: 'lightbulb_outline',
+    route: '/tip/',
+    visible: true,
+    component: TipsList,
+  },
+  {
+    id: Dashboards.TIPS_VIEW,
+    title: 'Tip',
+    icon: 'visibility',
+    route: '/tip/:id',
+    visible: false,
+    component: TipsView,
+  },
+  {
+    id: Dashboards.TIPS_EDIT,
+    title: 'Tip bewerken',
+    icon: 'edit',
+    route: '/tip/bewerken/:id',
+    visible: false,
+    component: DefaultForm(tipsTemplate, 'tips', 'tip', Dashboards.TIPS, Dashboards.TIPS_VIEW),
   },
   {
     id: Dashboards.ABOUT,

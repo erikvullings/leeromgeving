@@ -252,3 +252,6 @@ export const l = (val: undefined | string | Array<string | boolean | undefined>,
     return val;
   }
 };
+
+export const sortByTitle: ((a: Partial<IContent>, b: Partial<IContent>) => number) | undefined = (a, b) =>
+  (a.title || '') > (b.title || '') ? 1 : (a.title || '') < (b.title || '') ? -1 : 0;

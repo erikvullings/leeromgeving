@@ -24,8 +24,8 @@ export const LessonView: MeiosisComponent = () => {
     }) => {
       if (id && current?.$loki !== id) {
         load(id);
-        state.loaded = true;
       }
+      state.loaded = true;
     },
     view: ({
       attrs: {

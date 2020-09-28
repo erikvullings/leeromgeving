@@ -2,25 +2,25 @@ import m from 'mithril';
 // import { labelResolver } from 'mithril-ui-form';
 import { labelResolver } from '../../../utils';
 import { Dashboards, MeiosisComponent } from '../../../services';
-import { CircularSpinner, ViewFooter, TitleRating, ImageBox } from './../../ui';
+import { CircularSpinner, ViewFooter, TitleRating, ImageBox } from '../../ui';
 import { IContent } from '../../../models';
-import { newsTemplate } from '.';
+import { tipsTemplate } from '.';
 import { SlimdownView } from 'mithril-ui-form';
 
-export const NewsView: MeiosisComponent = () => {
+export const TipsView: MeiosisComponent = () => {
   const state = {
     loaded: false,
-    resolveObj: labelResolver(newsTemplate),
+    resolveObj: labelResolver(tipsTemplate),
   };
   const id = +m.route.param('id');
   return {
     oninit: ({
       attrs: {
         state: {
-          news: { current },
+          tips: { current },
         },
         actions: {
-          news: { load },
+          tips: { load },
         },
       },
     }) => {
@@ -32,11 +32,11 @@ export const NewsView: MeiosisComponent = () => {
     view: ({
       attrs: {
         state: {
-          news: { current },
+          tips: { current },
         },
         actions: {
           changePage,
-          news: { save },
+          tips: { save },
         },
       },
     }) => {
@@ -67,7 +67,7 @@ export const NewsView: MeiosisComponent = () => {
         ),
         m(ViewFooter, {
           content: current,
-          edit: Dashboards.NEWS_EDIT,
+          edit: Dashboards.TIPS_EDIT,
           changePage,
           save,
         }),

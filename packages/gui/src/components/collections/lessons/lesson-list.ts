@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { FlatButton, TextInput } from 'mithril-materialized';
 import { Dashboards } from '../../../services/dashboard-service';
-import { titleAndDescriptionFilter } from '../../../utils';
+import { sortByTitle, titleAndDescriptionFilter } from '../../../utils';
 import { MeiosisComponent } from '../../../services';
 import { IContent } from '../../../models';
 import { InfoCard } from '../../ui/info-card';
@@ -20,9 +20,6 @@ export const LessonsList: MeiosisComponent = () => {
     cmFunctionFilter: Array<string | number>;
     filterValue: string;
   };
-
-  const sortByTitle: ((a: Partial<IContent>, b: Partial<IContent>) => number) | undefined = (a, b) =>
-    (a.title || '') > (b.title || '') ? 1 : (a.title || '') < (b.title || '') ? -1 : 0;
 
   const pageSize = 24;
 
@@ -76,7 +73,7 @@ export const LessonsList: MeiosisComponent = () => {
                       // owner: [Auth.username],
                       // published: false,
                     } as IContent,
-                    () => actions.changePage(Dashboards.LESSON_EDIT)
+                    (c) => actions.changePage(Dashboards.LESSON_EDIT, { id: c.$loki })
                   );
                 },
               }),

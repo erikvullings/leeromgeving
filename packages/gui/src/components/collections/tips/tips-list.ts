@@ -6,7 +6,7 @@ import { MeiosisComponent } from '../../../services';
 import { IContent } from '../../../models';
 import { InfoCard } from '../../ui/info-card';
 
-export const NewsList: MeiosisComponent = () => {
+export const TipsList: MeiosisComponent = () => {
   const state = {
     filterValue: '',
   } as {
@@ -16,26 +16,25 @@ export const NewsList: MeiosisComponent = () => {
   const pageSize = 24;
 
   return {
-    oninit: ({ attrs: { actions } }) => actions.news.updateList(),
+    oninit: ({ attrs: { actions } }) => actions.tips.updateList(),
     view: ({
       attrs: {
         state: {
-          news: { list },
+          tips: { list },
         },
         actions,
       },
     }) => {
-      const news = list ? list.sort(sortByTitle) : [];
+      const tips = list ? list.sort(sortByTitle) : [];
       const query = titleAndDescriptionFilter(state.filterValue);
       const page = m.route.param('page') ? +m.route.param('page') : 0;
-      const filteredEvents = news.filter(query).slice(page * pageSize, (page + 1) * pageSize) || [];
+      const filteredEvents = tips.filter(query).slice(page * pageSize, (page + 1) * pageSize) || [];
       return m('.row', { style: 'margin-top: 1em;' }, [
         m(
           '.col.s12.l3',
           m(
             'ul#slide-out.sidenav.sidenav-fixed',
             {
-              style: 'height: 95vh',
               oncreate: ({ dom }) => {
                 M.Sidenav.init(dom);
               },
@@ -43,19 +42,19 @@ export const NewsList: MeiosisComponent = () => {
             [
               // Auth.isAuthenticated &&
               m(FlatButton, {
-                label: 'Nieuw bericht',
+                label: 'Nieuwe tip',
                 iconName: 'add',
                 class: 'col s11 indigo darken-4 white-text',
                 style: 'margin: 1em;',
                 onclick: () => {
-                  actions.news.save(
+                  actions.tips.save(
                     {
                       type: '',
-                      title: 'Nieuw bericht',
+                      title: 'Nieuwe tip',
                       // owner: [Auth.username],
                       // published: false,
                     } as IContent,
-                    (c) => actions.changePage(Dashboards.NEWS_EDIT, { id: c.$loki })
+                    (c) => actions.changePage(Dashboards.TIPS_EDIT, { id: c.$loki })
                   );
                 },
               }),
@@ -86,8 +85,8 @@ export const NewsList: MeiosisComponent = () => {
           filteredEvents.map((item) =>
             m(InfoCard, {
               item,
-              view: Dashboards.NEWS_VIEW,
-              edit: Dashboards.NEWS_EDIT,
+              view: Dashboards.TIPS_VIEW,
+              edit: Dashboards.TIPS_EDIT,
               changePage: actions.changePage,
             })
           )

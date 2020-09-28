@@ -5,16 +5,17 @@ import { InfoCard } from './ui/info-card';
 export const HomePage: MeiosisComponent = () => ({
   oninit: ({
     attrs: {
-      actions: { lessons, news, dilemmas },
+      actions: { lessons, news, dilemmas, tips },
     },
   }) => {
     lessons.updateList();
     news.updateList();
     dilemmas.updateList();
+    tips.updateList();
   },
   view: ({
     attrs: {
-      state: { lessons, news, dilemmas },
+      state: { lessons, news, dilemmas, tips },
       actions: { changePage },
     },
   }) =>
@@ -51,6 +52,17 @@ export const HomePage: MeiosisComponent = () => ({
             dilemmas.list &&
               dilemmas.list.map((n) =>
                 m(InfoCard, { item: n, view: Dashboards.DILEMMAS_VIEW, edit: Dashboards.DILEMMAS_EDIT, changePage })
+              )
+          )
+        ),
+        m('h5', 'Tips & Tricks...'),
+        m(
+          '.row',
+          m(
+            '.col.s12',
+            tips.list &&
+              tips.list.map((n) =>
+                m(InfoCard, { item: n, view: Dashboards.TIPS_VIEW, edit: Dashboards.TIPS_EDIT, changePage })
               )
           )
         ),
