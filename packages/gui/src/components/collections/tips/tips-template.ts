@@ -9,6 +9,6 @@ export const tipsTemplate = [
     label: 'Foto',
     type: 'file',
     options: [{ id: '.gif' }, { id: '.jpg' }, { id: '.jpeg' }, { id: '.png' }, { id: '.svg' }],
-    url: `${process.env.SERVER}/upload/nieuwsberichten`,
+    url: `${process.env.SERVER}/upload/tips`,
   },
 ] as UIForm;
