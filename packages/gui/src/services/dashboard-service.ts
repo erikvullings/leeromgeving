@@ -15,10 +15,14 @@ import {
   lessonTemplate,
   LessonView,
   TipsList,
-  tipsTemplate,
+  scenarioTemplate,
   TipsView,
+  NewsList,
+  newsTemplate,
+  NewsView,
+  ScenarioList,
+  ScenarioView,
 } from '../components';
-import { NewsList, newsTemplate, NewsView } from '../components/collections/news';
 import { DefaultForm } from '../components/ui';
 
 export const enum Dashboards {
@@ -145,7 +149,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   {
     id: Dashboards.NEWS,
     title: 'Nieuwsberichten',
-    icon: 'face',
+    icon: 'chat',
     route: '/nieuws/',
     visible: true,
     component: NewsList,
@@ -212,7 +216,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
     icon: 'edit',
     route: '/tip/bewerken/:id',
     visible: false,
-    component: DefaultForm(tipsTemplate, 'tips', 'tip', Dashboards.TIPS, Dashboards.TIPS_VIEW),
+    component: DefaultForm(scenarioTemplate, 'tips', 'tip', Dashboards.TIPS, Dashboards.TIPS_VIEW),
   },
   {
     id: Dashboards.ISSUES,
@@ -237,6 +241,30 @@ export const dashboardSvc: DashboardService = new DashboardService([
     route: '/vraag/bewerken/:id',
     visible: false,
     component: DefaultForm(issuesTemplate, 'issues', 'vraag', Dashboards.ISSUES, Dashboards.ISSUES_VIEW),
+  },
+  {
+    id: Dashboards.SCENARIOS,
+    title: 'Scenarios',
+    icon: 'local_movies',
+    route: '/scenario/',
+    visible: true,
+    component: ScenarioList,
+  },
+  {
+    id: Dashboards.SCENARIOS_VIEW,
+    title: 'Scenario',
+    icon: 'visibility',
+    route: '/scenario/:id',
+    visible: false,
+    component: ScenarioView,
+  },
+  {
+    id: Dashboards.SCENARIOS_EDIT,
+    title: 'Scenario bewerken',
+    icon: 'edit',
+    route: '/scenario/bewerken/:id',
+    visible: false,
+    component: DefaultForm(scenarioTemplate, 'scenarios', 'scenario', Dashboards.SCENARIOS, Dashboards.SCENARIOS_VIEW),
   },
   {
     id: Dashboards.ABOUT,
