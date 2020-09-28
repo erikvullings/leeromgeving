@@ -39,8 +39,7 @@ const createRestServiceFactory = (apiService: string) => {
       }
     };
 
-    const save = async (item: Partial<T>, fd?: FormData) =>
-      item.$loki ? await update(item, fd) : await create(item, fd);
+    const save = (item: Partial<T>, fd?: FormData) => (item.$loki ? update(item, fd) : create(item, fd));
 
     const del = async (id: number) => {
       try {
@@ -55,8 +54,8 @@ const createRestServiceFactory = (apiService: string) => {
       }
     };
 
-    const load = async (id?: number) =>
-      await m.request<T>({
+    const load = (id?: number) =>
+      m.request<T>({
         method: 'GET',
         url: url + id,
         withCredentials,

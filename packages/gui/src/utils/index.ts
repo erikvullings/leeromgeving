@@ -235,3 +235,20 @@ export const labelResolver = (form: UIForm) => {
 
   return resolveObj;
 };
+
+/** Print a list, removing empty items: a, b and c */
+export const l = (val: undefined | string | Array<string | boolean | undefined>, and = 'en') => {
+  if (!val) {
+    return '';
+  }
+  if (val instanceof Array) {
+    const v = val.filter(Boolean);
+    if (v.length === 1) {
+      return v[0];
+    }
+    const [last, oneButLast, ...items] = v.reverse();
+    return [...items, `${oneButLast} ${and} ${last}`].filter(Boolean).join(', ');
+  } else {
+    return val;
+  }
+};

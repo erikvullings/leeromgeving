@@ -12,6 +12,7 @@ export const NewsView: MeiosisComponent = () => {
     loaded: false,
     resolveObj: labelResolver(newsTemplate),
   };
+  const id = +m.route.param('id');
   return {
     oninit: ({
       attrs: {
@@ -23,15 +24,15 @@ export const NewsView: MeiosisComponent = () => {
         },
       },
     }) => {
-      const id = +m.route.param('id');
       if (id && current?.$loki !== id) {
         load(id);
+        state.loaded = true;
       }
     },
     view: ({
       attrs: {
         state: {
-          news: { current: content },
+          news: { current },
         },
         actions: {
           changePage,
@@ -39,11 +40,11 @@ export const NewsView: MeiosisComponent = () => {
         },
       },
     }) => {
-      const { resolveObj } = state;
+      const { resolveObj, loaded } = state;
       // console.log(JSON.stringify(item, null, 2));
-      const resolved = resolveObj<IContent>(content);
+      const resolved = resolveObj<IContent>(current);
       // console.log(JSON.stringify(resolved, null, 2));
-      if (!content) {
+      if (!loaded || !current || current.$loki !== id) {
         return m(CircularSpinner, {
           className: 'center-align',
           style: 'margin-top: 20%;',
@@ -53,19 +54,19 @@ export const NewsView: MeiosisComponent = () => {
         return undefined;
       }
 
-      const { desc } = content;
+      const { desc } = current;
 
       return [
         m(
           '.item-view',
           m('.row', [
-            m(TitleRating, { content }),
-            m(ImageBox, { content }),
+            m(TitleRating, { content: current }),
+            m(ImageBox, { content: current }),
             m('.col.s12', m(SlimdownView, { md: desc })),
           ])
         ),
         m(ViewFooter, {
-          content,
+          content: current,
           edit: Dashboards.NEWS_EDIT,
           changePage,
           save,

@@ -2,7 +2,17 @@ import m, { RouteDefs } from 'mithril';
 import { IDashboard } from '../models';
 import { actions, states } from './meiosis';
 import { Layout } from '../components/layout';
-import { AboutPage, HelpPage, HomePage, LessonsList, lessonTemplate, LessonView } from '../components';
+import {
+  AboutPage,
+  DilemmasList,
+  dilemmasTemplate,
+  DilemmasView,
+  HelpPage,
+  HomePage,
+  LessonsList,
+  lessonTemplate,
+  LessonView,
+} from '../components';
 import { NewsList, newsTemplate, NewsView } from '../components/collections/news';
 import { DefaultForm } from '../components/ui';
 
@@ -19,6 +29,9 @@ export const enum Dashboards {
   NEWS = 'NEWS',
   NEWS_VIEW = 'NEWS_VIEW',
   NEWS_EDIT = 'NEWS_EDIT',
+  DILEMMAS = 'DILEMMAS',
+  DILEMMAS_VIEW = 'DILEMMAS_VIEW',
+  DILEMMAS_EDIT = 'DILEMMAS_EDIT',
   TIPS = 'TIPS',
   TIPS_DETAILS = 'TIPS_DETAILS',
   SCENARIOS = 'SCENARIOS',
@@ -58,7 +71,6 @@ class DashboardService {
     const dashboard = this.dashboards.filter((d) => d.id === dashboardId).shift();
     if (dashboard) {
       const url = dashboard.route + (query ? '?' + m.buildQueryString(query) : '');
-      console.log(url);
       m.route.set(url, params);
     }
   }
@@ -106,7 +118,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   },
   {
     id: Dashboards.LESSON_VIEW,
-    title: 'Best practice',
+    title: 'Ervaring',
     icon: 'visibility',
     route: '/les/:id',
     visible: false,
@@ -114,7 +126,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   },
   {
     id: Dashboards.LESSON_EDIT,
-    title: 'Bewerken',
+    title: 'Ervaring bewerken',
     icon: 'edit',
     route: '/les/bewerken/:id',
     visible: false,
@@ -123,7 +135,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   {
     id: Dashboards.NEWS,
     title: 'Nieuwsberichten',
-    icon: 'people',
+    icon: 'face',
     route: '/nieuws/',
     visible: true,
     component: NewsList,
@@ -138,11 +150,35 @@ export const dashboardSvc: DashboardService = new DashboardService([
   },
   {
     id: Dashboards.NEWS_EDIT,
-    title: 'Nieuwsbericht',
+    title: 'Nieuwsbericht bewerken',
     icon: 'edit',
     route: '/nieuws/bewerken/:id',
     visible: false,
     component: DefaultForm(newsTemplate, 'news', 'bericht', Dashboards.NEWS, Dashboards.NEWS_VIEW),
+  },
+  {
+    id: Dashboards.DILEMMAS,
+    title: 'Dilemmas',
+    icon: 'compare_arrows',
+    route: '/dilemma/',
+    visible: true,
+    component: DilemmasList,
+  },
+  {
+    id: Dashboards.DILEMMAS_VIEW,
+    title: 'Dilemma',
+    icon: 'visibility',
+    route: '/dilemma/:id',
+    visible: false,
+    component: DilemmasView,
+  },
+  {
+    id: Dashboards.DILEMMAS_EDIT,
+    title: 'Dilemma bewerken',
+    icon: 'edit',
+    route: '/dilemma/bewerken/:id',
+    visible: false,
+    component: DefaultForm(dilemmasTemplate, 'dilemmas', 'dilemma', Dashboards.DILEMMAS, Dashboards.DILEMMAS_VIEW),
   },
   {
     id: Dashboards.ABOUT,

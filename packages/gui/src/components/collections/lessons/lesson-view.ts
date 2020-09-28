@@ -1,9 +1,7 @@
 import m from 'mithril';
-// import { labelResolver } from 'mithril-ui-form';
-import { labelResolver } from '../../../utils';
+import { labelResolver } from 'mithril-ui-form';
 import { Dashboards, MeiosisComponent } from '../../../services';
 import { CircularSpinner, ViewFooter, TitleRating, ImageBox } from './../../ui';
-import { IContent } from '../../../models';
 import { LessonTypes, lessonTemplate } from '.';
 import { SlimdownView } from 'mithril-ui-form';
 
@@ -12,6 +10,7 @@ export const LessonView: MeiosisComponent = () => {
     loaded: false,
     resolveObj: labelResolver(lessonTemplate),
   };
+  const id = +m.route.param('id');
   return {
     oninit: ({
       attrs: {
@@ -23,15 +22,15 @@ export const LessonView: MeiosisComponent = () => {
         },
       },
     }) => {
-      const id = +m.route.param('id');
       if (id && current?.$loki !== id) {
         load(id);
+        state.loaded = true;
       }
     },
     view: ({
       attrs: {
         state: {
-          lessons: { current: content },
+          lessons: { current },
         },
         actions: {
           changePage,
@@ -39,21 +38,18 @@ export const LessonView: MeiosisComponent = () => {
         },
       },
     }) => {
-      const { resolveObj } = state;
+      const { loaded } = state;
       // console.log(JSON.stringify(item, null, 2));
-      const resolved = resolveObj<IContent>(content);
+      // const resolved = resolveObj<IContent>(current);
       // console.log(JSON.stringify(resolved, null, 2));
-      if (!content) {
+      if (!loaded || !current || current.$loki !== id) {
         return m(CircularSpinner, {
           className: 'center-align',
           style: 'margin-top: 20%;',
         });
       }
-      if (!resolved) {
-        return undefined;
-      }
 
-      const { type, desc, tag, solution, remarks } = content;
+      const { type, desc, tag, solution, remarks } = current;
 
       const convertedTypes = type
         ? type instanceof Array
@@ -74,9 +70,9 @@ export const LessonView: MeiosisComponent = () => {
         m(
           '.item-view',
           m('.row', [
-            m(TitleRating, { content }),
+            m(TitleRating, { content: current }),
             (tag || type) && m('i.col.s12.center-align', `${tag}${type ? ` (categorie: ${convertedTypes})` : ''}`),
-            m(ImageBox, { content }),
+            m(ImageBox, { content: current }),
             desc && [m('h4', 'Probleem omschrijving'), m(SlimdownView, { md: desc })],
             solution && [m('h4', 'Oplossing'), m(SlimdownView, { md: solution })],
             remarks && [m('h4', 'Opmerkingen'), m(SlimdownView, { md: remarks })],
@@ -84,7 +80,7 @@ export const LessonView: MeiosisComponent = () => {
         ),
 
         m(ViewFooter, {
-          content: content,
+          content: current,
           edit: Dashboards.LESSON_EDIT,
           changePage,
           save,

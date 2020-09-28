@@ -69,12 +69,15 @@ export const NewsList: MeiosisComponent = () => {
                 class: 'col s11 indigo darken-4 white-text',
                 style: 'margin: 1em;',
                 onclick: () => {
-                  actions.news.save({
-                    type: '',
-                    title: 'Nieuw bericht',
-                    // owner: [Auth.username],
-                    // published: false,
-                  } as IContent);
+                  actions.news.save(
+                    {
+                      type: '',
+                      title: 'Nieuw bericht',
+                      // owner: [Auth.username],
+                      // published: false,
+                    } as IContent,
+                    () => actions.changePage(Dashboards.NEWS_EDIT)
+                  );
                 },
               }),
               m('h4.primary-text', { style: 'margin-left: 0.5em;' }, 'Filter berichten'),

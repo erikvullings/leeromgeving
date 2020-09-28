@@ -61,7 +61,7 @@ export const Layout: MeiosisComponent = () => ({
                   m(`li.tooltip${isActive(d)}`, [
                     m(Icon, {
                       className: 'hoverable',
-                      style: 'color: black; font-size: 2.2rem; width: 4rem;',
+                      style: 'font-size: 2.2rem; width: 4rem;',
                       iconName: typeof d.icon === 'string' ? d.icon : d.icon(),
                       onclick: () => changePage(d.id),
                     }),

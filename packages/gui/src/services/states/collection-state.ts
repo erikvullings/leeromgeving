@@ -20,7 +20,7 @@ export type CollectionActions<T extends IContent> = {
   /** Select an item */
   load: (id: number) => void;
   /** Save an item */
-  save: (item: Partial<T>) => void; // | T;
+  save: (item: Partial<T>, callback?: (current: Partial<T>) => void) => void; // | T;
   /** Delete an item */
   del: (id: number) => void;
   /** Change section */
@@ -46,7 +46,7 @@ export const collectionFactory = <T extends IContent>(collectionName: Collection
         list: [] as T[],
       } as CollectionType<T>,
     } as CollectionsModel<T>,
-    actions: (us, _states) => {
+    actions: (us, states) => {
       return {
         [collectionName]: {
           updateList: async () => {
@@ -58,16 +58,24 @@ export const collectionFactory = <T extends IContent>(collectionName: Collection
           load: async (id) => {
             const current = await restSvc.load(id);
             if (current) {
-              us({ [collectionName]: { current } });
+              const state = states();
+              const { current: old = {} } = state[collectionName];
+              Object.keys(old).forEach((k) => (old[k as keyof IContent] = undefined));
+              us({ [collectionName]: { current: { ...old, ...current } } });
             }
           },
-          save: async (item) => {
+          save: async (item, callback?: (current: Partial<T>) => void) => {
             // const state = states();
             // const { mode } = state[collectionName];
             // const newMode = mode || !item.$loki ? 'edit' : 'view';
             const current = await restSvc.save(item);
             if (current) {
+              // const state = states();
+              // const list = state[collectionName].list as T[];
+              // list.push(current);
+              console.table(current);
               us({ [collectionName]: { current } });
+              callback && callback(current);
             }
           },
           del: async (id) => {

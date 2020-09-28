@@ -6,18 +6,10 @@ import { MeiosisComponent } from '../../../services';
 import { IContent } from '../../../models';
 import { InfoCard } from '../../ui/info-card';
 
-export const LessonsList: MeiosisComponent = () => {
+export const DilemmasList: MeiosisComponent = () => {
   const state = {
     filterValue: '',
-    policeUnitFilter: [],
-    eventTypeFilter: [],
-    itemTypeFilter: [],
-    cmFunctionFilter: [],
   } as {
-    policeUnitFilter: Array<string | number>;
-    eventTypeFilter: Array<string | number>;
-    itemTypeFilter: string[];
-    cmFunctionFilter: Array<string | number>;
     filterValue: string;
   };
 
@@ -27,28 +19,22 @@ export const LessonsList: MeiosisComponent = () => {
   const pageSize = 24;
 
   return {
-    oninit: ({ attrs: { actions } }) => actions.lessons.updateList(),
+    oninit: ({ attrs: { actions } }) => actions.dilemmas.updateList(),
     view: ({
       attrs: {
         state: {
-          lessons: { list },
+          dilemmas: { list },
         },
         actions,
       },
     }) => {
-      const lessons = list ? list.sort(sortByTitle) : [];
+      const dilemmas = list ? list.sort(sortByTitle) : [];
       const query = titleAndDescriptionFilter(state.filterValue);
       const page = m.route.param('page') ? +m.route.param('page') : 0;
       const filteredEvents =
-        lessons
-          // .filter(
-          //   (ev) => ev.published || (Auth.isAuthenticated && (Auth.roles.indexOf(Roles.ADMIN) >= 0 || Auth.canEdit(ev)))
-          // )
+        dilemmas
+          // .filter((ev) => ev.published)
           .filter(query)
-          // .filter(typeFilter('policeUnit', policeUnitFilter))
-          // .filter(typeFilter('eventType', eventTypeFilter))
-          // .filter(typeFilter('cmFunctions', cmFunctionFilter))
-          // .filter(itemFilter(itemTypeFilter))
           .slice(page * pageSize, (page + 1) * pageSize) || [];
       return m('.row', { style: 'margin-top: 1em;' }, [
         m(
@@ -64,23 +50,23 @@ export const LessonsList: MeiosisComponent = () => {
             [
               // Auth.isAuthenticated &&
               m(FlatButton, {
-                label: 'Nieuwe les',
+                label: 'Nieuw dilemma',
                 iconName: 'add',
                 class: 'col s11 indigo darken-4 white-text',
                 style: 'margin: 1em;',
                 onclick: () => {
-                  actions.lessons.save(
+                  actions.dilemmas.save(
                     {
                       type: '',
-                      title: 'Nieuwe les',
+                      title: 'Nieuw dilemma',
                       // owner: [Auth.username],
                       // published: false,
                     } as IContent,
-                    () => actions.changePage(Dashboards.LESSON_EDIT)
+                    () => actions.changePage(Dashboards.DILEMMAS_EDIT)
                   );
                 },
               }),
-              m('h4.primary-text', { style: 'margin-left: 0.5em;' }, 'Filter lessen'),
+              m('h4.primary-text', { style: 'margin-left: 0.5em;' }, 'Filter dilemmas'),
               m(TextInput, {
                 label: 'Zoek in de tekst',
                 id: 'filter',
@@ -97,10 +83,6 @@ export const LessonsList: MeiosisComponent = () => {
                 style: 'margin: 1em;',
                 onclick: () => {
                   state.filterValue = '';
-                  state.policeUnitFilter.length = 0;
-                  state.cmFunctionFilter.length = 0;
-                  state.eventTypeFilter.length = 0;
-                  state.itemTypeFilter.length = 0;
                 },
               }),
             ]
@@ -111,8 +93,8 @@ export const LessonsList: MeiosisComponent = () => {
           filteredEvents.map((item) =>
             m(InfoCard, {
               item,
-              view: Dashboards.LESSON_VIEW,
-              edit: Dashboards.LESSON_EDIT,
+              view: Dashboards.DILEMMAS_VIEW,
+              edit: Dashboards.DILEMMAS_EDIT,
               changePage: actions.changePage,
             })
           )

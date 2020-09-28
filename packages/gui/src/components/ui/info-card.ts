@@ -25,7 +25,7 @@ export const InfoCard: FactoryComponent<{
   return {
     view: ({ attrs: { item, changePage, view, edit } }) => {
       const { rating = 0, comments = [], $loki, tag, title, desc, img, author } = item;
-      return m('.col.s12.m6.xl4', [
+      return m('.col.s12.m6.l4', [
         m(
           '.card.small.hoverable.sticky-action',
           img &&
@@ -34,14 +34,14 @@ export const InfoCard: FactoryComponent<{
                 alt: title,
                 src: `${process.env.SERVER}${img}`,
               }),
-              m('span.card-title', title),
+              tag && m('span.card-title', title),
             ]),
           m('.card-content', [
             m('span.card-title.activator.grey-text.text-darken-4', [
-              title,
+              tag || title,
               m(Icon, { iconName: 'more_vert', className: 'right' }),
             ]),
-            m('p.light.block-with-text', tag),
+            m('p.light.block-with-text', desc),
           ]),
           m('.card-reveal', [
             m('span.card-title.activator.grey-text.text-darken-4', [
