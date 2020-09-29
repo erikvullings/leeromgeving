@@ -42,7 +42,7 @@ export const ScenarioList: MeiosisComponent = () => {
             [
               // Auth.isAuthenticated &&
               m(FlatButton, {
-                label: 'Nieuw scenario',
+                label: 'Nieuw draaiboek',
                 iconName: 'add',
                 class: 'col s11 indigo darken-4 white-text',
                 style: 'margin: 1em;',
@@ -50,7 +50,7 @@ export const ScenarioList: MeiosisComponent = () => {
                   actions.scenarios.save(
                     {
                       type: '',
-                      title: 'Nieuw scenario',
+                      title: 'Nieuw draaiboek',
                       // owner: [Auth.username],
                       // published: false,
                     } as IContent,

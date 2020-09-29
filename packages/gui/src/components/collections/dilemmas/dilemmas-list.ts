@@ -47,7 +47,7 @@ export const DilemmasList: MeiosisComponent = () => {
             [
               // Auth.isAuthenticated &&
               m(FlatButton, {
-                label: 'Nieuw dilemma',
+                label: 'Nieuwe vraag',
                 iconName: 'add',
                 class: 'col s11 indigo darken-4 white-text',
                 style: 'margin: 1em;',
@@ -55,7 +55,7 @@ export const DilemmasList: MeiosisComponent = () => {
                   actions.dilemmas.save(
                     {
                       type: '',
-                      title: 'Nieuw dilemma',
+                      title: 'Nieuwe vraag',
                       // owner: [Auth.username],
                       // published: false,
                     } as IContent,
@@ -63,7 +63,7 @@ export const DilemmasList: MeiosisComponent = () => {
                   );
                 },
               }),
-              m('h4.primary-text', { style: 'margin-left: 0.5em;' }, 'Filter dilemmas'),
+              m('h4.primary-text', { style: 'margin-left: 0.5em;' }, 'Filter vragen'),
               m(TextInput, {
                 label: 'Zoek in de tekst',
                 id: 'filter',

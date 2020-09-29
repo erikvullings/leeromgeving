@@ -68,6 +68,18 @@ export const range = (from: number, to: number, count: number = to - from + 1, s
 };
 
 /**
+ * Shuffles array in place. ES6 version
+ * @param {Array} a items An array containing the items.
+ */
+export const shuffle = (a: Array<any>) => {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+
+/**
  * Function to filter case-insensitive name and description.
  * @param filterValue Filter text
  */

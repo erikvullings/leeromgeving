@@ -18,15 +18,29 @@ export const roleOptions = [
 ];
 
 export const dilemmaOptions = [
+  { id: 'question', label: 'Open vraag' },
+  { id: 'mc', label: 'Meerkeuzevraag' },
   { id: 'role', label: 'Rol verantwoordelijkheid' },
-  { id: 'characteristics', label: 'Karakteristieken' },
+  { id: 'characteristics', label: 'Dilemma karakteristiek' },
 ] as Array<{ id: DilemmaType; label: string }>;
 
 export const dilemmasTemplate = [
-  { id: 'title', className: 'col s4', label: 'Onderwerp', type: 'text' },
+  { id: 'type', className: 'col s4', label: 'Soort vraag', type: 'select', options: dilemmaOptions },
+  { id: 'title', show: '!type=mc', className: 'col s4', label: 'Titel', type: 'text' },
   { id: 'author', className: 'col s4', label: 'Auteur(s)', type: 'text' },
-  { id: 'type', className: 'col s4', label: 'Type', type: 'select', options: dilemmaOptions },
-  { id: 'desc', label: 'Dilemma', type: 'textarea' },
+  { id: 'desc', show: ['type=role', 'type=characteristics'], label: 'Situatie', type: 'textarea' },
+  { id: 'desc', show: 'type=question', label: 'Antwoord', type: 'textarea' },
+  { id: 'title', show: 'type=mc', label: 'Vraag', type: 'textarea' },
+  {
+    id: 'desc',
+    show: 'type=mc',
+    label: 'Antwoorden',
+    description: `
+  Schrijf de meerkeuzevragen als bullets, onder elkaar, waarbij het eerste antwoord correct is:
+  - Optie 1, het antwoord
+  - Optie 2, etc.`,
+    type: 'textarea',
+  },
   { id: 'role', label: 'Verantwoordelijke rol', show: 'type=role', type: 'select', options: roleOptions },
   {
     id: 'characteristic',
@@ -99,7 +113,7 @@ export const dilemmasTemplate = [
     id: 'notes',
     label: 'Opmerkingen',
     type: 'textarea',
-    description: 'Opmerkingen worden pas zichtbaar na het beantwoorden van het dilemma.',
+    description: 'Opmerkingen worden pas zichtbaar na het beantwoorden.',
   },
   {
     id: 'img',

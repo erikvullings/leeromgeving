@@ -1,6 +1,6 @@
 import { IContent } from '.';
 
-export type DilemmaType = 'role' | 'characteristics';
+export type DilemmaType = 'role' | 'characteristics' | 'mc' | 'question';
 
 export type Characteristic = {
   /** Time pressure */

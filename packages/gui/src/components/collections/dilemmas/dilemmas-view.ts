@@ -4,7 +4,7 @@ import { l } from '../../../utils';
 import { Dashboards, MeiosisComponent } from '../../../services';
 import { CircularSpinner, ViewFooter, TitleRating, ImageBox } from '../../ui';
 import { Characteristic, IDilemma } from '../../../models';
-import { dilemmasTemplate, roleOptions } from '.';
+import { dilemmasTemplate, MultipleChoiceQuestion, roleOptions } from '.';
 import { SlimdownView } from 'mithril-ui-form';
 import { FlatButton, InputCheckbox, Select } from 'mithril-materialized';
 
@@ -92,95 +92,109 @@ export const DilemmasView: MeiosisComponent = () => {
         typeof characteristics.info === 'boolean' ||
         typeof characteristics.conflict === 'boolean';
 
-      return m('.dilemma-view', [
-        m(
-          '.item-view',
-          m('.row', [
-            m(TitleRating, { content: current }),
-            m(ImageBox, { content: current }),
-            m('.col.s12', m(SlimdownView, { md: desc })),
-            type === 'role' &&
-              m(Select, {
-                label: 'Verantwoordelijke rol',
-                className: 'col s12 m6',
-                placeholder: 'Kies de verantwoordelijke rol',
-                options: roleOptions,
-                onchange: (v) => {
-                  state.role = (v instanceof Array ? v[0] : v) as string;
-                  state.answered = false;
-                },
-              }),
-            type === 'characteristics' && [
-              m('.col.s12.question', 'Karakteristieken van deze situatie'),
-              m(InputCheckbox, {
-                label: 'Tijdsdruk',
-                className: 'col s12 m4',
-                onchange: (v) => {
-                  state.characteristics.time = v;
-                  state.answered = false;
-                },
-              }),
-              m(InputCheckbox, {
-                label: 'Onzekere informatie',
-                className: 'col s12 m4',
-                onchange: (v) => {
-                  state.characteristics.info = v;
-                  state.answered = false;
-                },
-              }),
-              m(InputCheckbox, {
-                label: 'Conflicterende belangen',
-                className: 'col s12 m4',
-                onchange: (v) => {
-                  state.characteristics.conflict = v;
-                  state.answered = false;
-                },
-              }),
-            ],
-            m(FlatButton, {
-              label: answered ? 'Verberg het antwoord' : 'Controleer je antwoord',
-              iconName: 'check',
-              className: 'col s12 m6',
-              disabled: !hasAnswered,
-              onclick: () => {
-                const { time = false, info = false, conflict = false } = characteristics;
-                state.answered = !answered;
-                state.correct =
-                  (type === 'role' && role === current.role) ||
-                  (type === 'characteristics' && time === cTime && info === cInfo && conflict === cConflict);
-              },
+      return type === 'mc'
+        ? [
+            m(TitleRating, { content: { ...current, title: 'Meerkeuzevraag' } }),
+            m(MultipleChoiceQuestion, { question: current }),
+            m(ViewFooter, {
+              content: current,
+              edit: Dashboards.DILEMMAS_EDIT,
+              changePage,
+              save,
             }),
-            answered && [
-              correct && [
+          ]
+        : m('.dilemma-view', [
+            m(
+              '.item-view',
+              m('.row', [
+                type !== 'question' && m(TitleRating, { content: current }),
+                m(ImageBox, { content: current }),
+                m('.col.s12', m(SlimdownView, { md: desc })),
                 type === 'role' &&
-                  m('h4.col.s12.center-align', `Goed gedaan, de ${resolved.role} is verantwoordelijk.`),
-                type === 'characteristics' &&
-                  m('h4.col.s12.center-align', `Goed gedaan, we hebben inderdaad te maken met een ${decisionModel}!`),
-              ],
-              !correct && [
-                type === 'role' &&
-                  m('h4.col.s12.center-align', `Helaas, de verantwoording ligt bij de ${resolved.role}.`),
-                type === 'characteristics' &&
-                  m(
-                    'h4.col.s12.center-align',
-                    `Helaas, we hebben te maken met een ${decisionModel} met de volgende eigenschap(pen): ${l([
-                      cTime && 'hoge tijdsdruk',
-                      cInfo && 'grote onzekerheid over de informatie',
-                      cConflict && 'conflicterende belangen',
-                    ])}.`
-                  ),
-              ],
-              notes && [m('h5.col.s12', 'Terugkoppeling'), m(SlimdownView, { md: notes })],
-            ],
-          ])
-        ),
-        m(ViewFooter, {
-          content: current,
-          edit: Dashboards.DILEMMAS_EDIT,
-          changePage,
-          save,
-        }),
-      ]);
+                  m(Select, {
+                    label: 'Verantwoordelijke rol',
+                    className: 'col s12 m6',
+                    placeholder: 'Kies de verantwoordelijke rol',
+                    options: roleOptions,
+                    onchange: (v) => {
+                      state.role = (v instanceof Array ? v[0] : v) as string;
+                      state.answered = false;
+                    },
+                  }),
+                type === 'characteristics' && [
+                  m('.col.s12.question', 'Karakteristieken van deze situatie'),
+                  m(InputCheckbox, {
+                    label: 'Tijdsdruk',
+                    className: 'col s12 m4',
+                    onchange: (v) => {
+                      state.characteristics.time = v;
+                      state.answered = false;
+                    },
+                  }),
+                  m(InputCheckbox, {
+                    label: 'Onzekere informatie',
+                    className: 'col s12 m4',
+                    onchange: (v) => {
+                      state.characteristics.info = v;
+                      state.answered = false;
+                    },
+                  }),
+                  m(InputCheckbox, {
+                    label: 'Conflicterende belangen',
+                    className: 'col s12 m4',
+                    onchange: (v) => {
+                      state.characteristics.conflict = v;
+                      state.answered = false;
+                    },
+                  }),
+                ],
+                m(FlatButton, {
+                  label: answered ? 'Verberg het antwoord' : 'Controleer je antwoord',
+                  iconName: 'check',
+                  className: 'col s12 m6',
+                  disabled: !hasAnswered,
+                  onclick: () => {
+                    const { time = false, info = false, conflict = false } = characteristics;
+                    state.answered = !answered;
+                    state.correct =
+                      (type === 'role' && role === current.role) ||
+                      (type === 'characteristics' && time === cTime && info === cInfo && conflict === cConflict);
+                  },
+                }),
+                answered && [
+                  correct && [
+                    type === 'role' &&
+                      m('h4.col.s12.center-align', `Goed gedaan, de ${resolved.role} is verantwoordelijk.`),
+                    type === 'characteristics' &&
+                      m(
+                        'h4.col.s12.center-align',
+                        `Goed gedaan, we hebben inderdaad te maken met een ${decisionModel}!`
+                      ),
+                  ],
+                  !correct && [
+                    type === 'role' &&
+                      m('h4.col.s12.center-align', `Helaas, de verantwoording ligt bij de ${resolved.role}.`),
+                    type === 'characteristics' &&
+                      m(
+                        'h4.col.s12.center-align',
+                        `Helaas, we hebben te maken met een ${decisionModel} met de volgende eigenschap(pen): ${l([
+                          cTime && 'hoge tijdsdruk',
+                          cInfo && 'grote onzekerheid over de informatie',
+                          cConflict && 'conflicterende belangen',
+                        ])}.`
+                      ),
+                  ],
+                  notes && [m('h5.col.s12', 'Terugkoppeling'), m(SlimdownView, { md: notes })],
+                ],
+              ])
+            ),
+            m(ViewFooter, {
+              content: current,
+              edit: Dashboards.DILEMMAS_EDIT,
+              changePage,
+              save,
+            }),
+          ]);
     },
   };
 };

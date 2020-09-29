@@ -108,7 +108,7 @@ export const DefaultForm = (
               ]
             )
           ),
-          m('.col.s12.l9', [
+          m('.col.s12.l9.item-form', [
             m(LayoutForm, {
               key: section,
               form: template,

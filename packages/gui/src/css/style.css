@@ -333,3 +333,9 @@ li.collection-item:first-child {
   left: 50%;
 }
 /** End Tooltips */
+.item-form {
+  margin-top: 10px;
+}
+.multiple-choice-question label span {
+  color: black;
+}
