@@ -1,6 +1,6 @@
 import m from 'mithril';
 // import { labelResolver } from 'mithril-ui-form';
-import { actions, Dashboards, MeiosisComponent } from '../../../services';
+import { Dashboards, MeiosisComponent } from '../../../services';
 import { CircularSpinner, ViewFooter, TitleRating, ImageBox } from '../../ui';
 import { SlimdownView } from 'mithril-ui-form';
 import { FlatButton, Pagination } from 'mithril-materialized';
