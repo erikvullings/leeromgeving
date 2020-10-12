@@ -127,7 +127,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
     title: 'Best practices',
     icon: 'feedback',
     route: '/les/',
-    visible: true,
+    visible: false,
     component: LessonsList,
   },
   {
@@ -151,7 +151,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
     title: 'Nieuwsberichten',
     icon: 'chat',
     route: '/nieuws/',
-    visible: true,
+    visible: false,
     component: NewsList,
   },
   {
@@ -175,7 +175,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
     title: 'Quiz',
     icon: 'compare_arrows',
     route: '/quiz/',
-    visible: true,
+    visible: false,
     component: DilemmasList,
   },
   {
@@ -199,7 +199,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
     title: 'Tips & Tricks',
     icon: 'lightbulb_outline',
     route: '/tip/',
-    visible: true,
+    visible: false,
     component: TipsList,
   },
   {
@@ -223,7 +223,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
     title: 'Vragen',
     icon: 'live_help',
     route: '/vraag/',
-    visible: true,
+    visible: false,
     component: IssuesList,
   },
   {
@@ -247,7 +247,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
     title: 'Draaiboeken',
     icon: 'local_movies',
     route: '/draaiboek/',
-    visible: true,
+    visible: false,
     component: ScenarioList,
   },
   {

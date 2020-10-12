@@ -85,6 +85,7 @@ export const TipsList: MeiosisComponent = () => {
           filteredEvents.map((item) =>
             m(InfoCard, {
               item,
+              list: Dashboards.TIPS,
               view: Dashboards.TIPS_VIEW,
               edit: Dashboards.TIPS_EDIT,
               changePage: actions.changePage,

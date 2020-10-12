@@ -1,5 +1,6 @@
 import { UIForm, IInputField, padLeft } from 'mithril-ui-form';
 import { IContent } from '../models';
+import { Dashboards } from '../services';
 
 /**
  * Create a GUID
@@ -267,3 +268,40 @@ export const l = (val: undefined | string | Array<string | boolean | undefined>,
 
 export const sortByTitle: ((a: Partial<IContent>, b: Partial<IContent>) => number) | undefined = (a, b) =>
   (a.title || '') > (b.title || '') ? 1 : (a.title || '') < (b.title || '') ? -1 : 0;
+
+export const sortByTime: ((a: Partial<IContent>, b: Partial<IContent>) => number) | undefined = (a, b) => {
+  const dA = a.meta?.updated || a.meta?.created || 0;
+  const dB = b.meta?.updated || b.meta?.created || 0;
+  return dA > dB ? -1 : dA < dB ? 1 : 0;
+};
+
+export const dashboardToIcon = (d: Dashboards) => {
+  switch (d) {
+    case Dashboards.NEWS:
+      return 'chat';
+    case Dashboards.LESSONS:
+      return 'feedback';
+    case Dashboards.DILEMMAS:
+      return 'compare_arrows';
+    case Dashboards.TIPS:
+      return 'lightbulb_outline';
+    case Dashboards.ISSUES:
+      return 'live_help';
+    case Dashboards.SCENARIOS:
+      return 'local_movies';
+    default:
+      return 'help';
+  }
+};
+
+export const mediaOptions = [
+  { id: '.gif' },
+  { id: '.jpg' },
+  { id: '.jpeg' },
+  { id: '.png' },
+  { id: '.svg' },
+  { id: '.mp3' },
+  { id: '.mp4' },
+  { id: '.wmv' },
+  { id: '.mkv' },
+];

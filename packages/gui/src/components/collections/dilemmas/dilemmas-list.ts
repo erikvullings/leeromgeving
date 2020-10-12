@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { FlatButton, TextInput } from 'mithril-materialized';
 import { Dashboards } from '../../../services/dashboard-service';
-import { sortByTitle, titleAndDescriptionFilter } from '../../../utils';
+import { sortByTime, titleAndDescriptionFilter } from '../../../utils';
 import { MeiosisComponent } from '../../../services';
 import { IContent } from '../../../models';
 import { InfoCard } from '../../ui/info-card';
@@ -25,7 +25,7 @@ export const DilemmasList: MeiosisComponent = () => {
         actions,
       },
     }) => {
-      const dilemmas = list ? list.sort(sortByTitle) : [];
+      const dilemmas = list ? list.sort(sortByTime) : [];
       const query = titleAndDescriptionFilter(state.filterValue);
       const page = m.route.param('page') ? +m.route.param('page') : 0;
       const filteredEvents =
@@ -90,6 +90,7 @@ export const DilemmasList: MeiosisComponent = () => {
           filteredEvents.map((item) =>
             m(InfoCard, {
               item,
+              list: Dashboards.DILEMMAS,
               view: Dashboards.DILEMMAS_VIEW,
               edit: Dashboards.DILEMMAS_EDIT,
               changePage: actions.changePage,

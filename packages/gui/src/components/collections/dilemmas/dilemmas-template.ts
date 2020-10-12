@@ -1,5 +1,6 @@
 import { UIForm } from 'mithril-ui-form';
 import { DilemmaType } from '../../../models';
+import { mediaOptions } from '../../../utils';
 
 export const roleOptions = [
   { id: 'HOVD', label: 'HOVD' },
@@ -26,11 +27,11 @@ export const dilemmaOptions = [
 
 export const dilemmasTemplate = [
   { id: 'type', className: 'col s4', label: 'Soort vraag', type: 'select', options: dilemmaOptions },
-  { id: 'title', show: '!type=mc', className: 'col s4', label: 'Titel', type: 'text' },
+  { id: 'title', show: '!type=mc & type=question', className: 'col s4', label: 'Titel', type: 'text' },
   { id: 'author', className: 'col s4', label: 'Auteur(s)', type: 'text' },
   { id: 'desc', show: ['type=role', 'type=characteristics'], label: 'Situatie', type: 'textarea' },
+  { id: 'title', show: ['type=mc', 'type=question'], label: 'Vraag', type: 'textarea' },
   { id: 'desc', show: 'type=question', label: 'Antwoord', type: 'textarea' },
-  { id: 'title', show: 'type=mc', label: 'Vraag', type: 'textarea' },
   {
     id: 'desc',
     show: 'type=mc',
@@ -117,9 +118,16 @@ export const dilemmasTemplate = [
   },
   {
     id: 'img',
-    label: 'Foto',
+    label: 'Media bij de vraag',
     type: 'file',
-    options: [{ id: '.gif' }, { id: '.jpg' }, { id: '.jpeg' }, { id: '.png' }, { id: '.svg' }],
+    options: mediaOptions,
+    url: `${process.env.SERVER}/upload/dilemmas`,
+  },
+  {
+    id: 'img2',
+    label: 'Media bij het antwoord',
+    type: 'file',
+    options: mediaOptions,
     url: `${process.env.SERVER}/upload/dilemmas`,
   },
 ] as UIForm;

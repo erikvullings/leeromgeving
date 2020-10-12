@@ -68,7 +68,7 @@ export const DilemmasView: MeiosisComponent = () => {
         return undefined;
       }
 
-      const { desc, type, notes } = current;
+      const { desc, type, notes, img2 } = current;
       const { time: cTime = false, info: cInfo = false, conflict: cConflict = false } = current.characteristics || {};
 
       const decisionModel =
@@ -184,7 +184,11 @@ export const DilemmasView: MeiosisComponent = () => {
                         ])}.`
                       ),
                   ],
-                  notes && [m('h5.col.s12', 'Terugkoppeling'), m(SlimdownView, { md: notes })],
+                  notes && [
+                    m('h5.col.s12', 'Terugkoppeling'),
+                    m(SlimdownView, { md: notes }),
+                    img2 && m(ImageBox, { content: { img: img2 } }),
+                  ],
                 ],
               ])
             ),

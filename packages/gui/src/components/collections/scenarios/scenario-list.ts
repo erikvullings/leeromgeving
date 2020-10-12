@@ -85,6 +85,7 @@ export const ScenarioList: MeiosisComponent = () => {
           filteredEvents.map((item) =>
             m(InfoCard, {
               item,
+              list: Dashboards.SCENARIOS,
               view: Dashboards.SCENARIOS_VIEW,
               edit: Dashboards.SCENARIOS_EDIT,
               changePage: actions.changePage,

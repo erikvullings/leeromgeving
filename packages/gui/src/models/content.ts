@@ -12,8 +12,10 @@ export interface IBasicContent {
   author?: string[];
   /** Rating score */
   rating?: number;
-  /** Link to a single image */
+  /** Link to an image, e.g. for the front page */
   img?: string;
+  /** Link to an image, e.g. to go with the answer */
+  img2?: string;
   /** Tagline, a brief summary of the item */
   tag?: string;
   /** Longer description of the item */

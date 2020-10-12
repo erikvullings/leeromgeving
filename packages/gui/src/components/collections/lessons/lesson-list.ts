@@ -108,6 +108,7 @@ export const LessonsList: MeiosisComponent = () => {
           filteredEvents.map((item) =>
             m(InfoCard, {
               item,
+              list: Dashboards.LESSONS,
               view: Dashboards.LESSON_VIEW,
               edit: Dashboards.LESSON_EDIT,
               changePage: actions.changePage,

@@ -1,11 +1,13 @@
 import m, { FactoryComponent } from 'mithril';
 import { Icon } from 'mithril-materialized';
-import { SlimdownView } from 'mithril-ui-form';
+import { render } from 'mithril-ui-form';
 import { IContent } from '../../models';
 import { Dashboards } from '../../services';
+import { dashboardToIcon } from '../../utils';
 
 export const InfoCard: FactoryComponent<{
   item: Partial<IContent>;
+  list: Dashboards;
   view: Dashboards;
   edit: Dashboards;
   changePage: (
@@ -23,11 +25,11 @@ export const InfoCard: FactoryComponent<{
   ) => void;
 }> = () => {
   return {
-    view: ({ attrs: { item, changePage, view, edit } }) => {
-      const { rating = 0, comments = [], $loki, tag, title, desc, img, author } = item;
-      return m('.col.s12.m6.l4', [
+    view: ({ attrs: { item, changePage, view, edit, list } }) => {
+      const { rating = 0, comments = [], $loki, tag, title, desc, img, author, type } = item;
+      return m('.col.s12.m4', [
         m(
-          '.card.small.hoverable.sticky-action',
+          '.card.hoverable.sticky-action.small', // + (img ? '.medium' : '.small'),
           img &&
             m('.card-image.waves-effect.waves-block.waves-light', [
               m('img', {
@@ -41,17 +43,27 @@ export const InfoCard: FactoryComponent<{
               tag || title,
               m(Icon, { iconName: 'more_vert', className: 'right' }),
             ]),
-            m('p.light.block-with-text', desc),
+            m('p.light.block-with-text', m.trust(render((type === 'mc' ? title : desc) || '', true))),
           ]),
           m('.card-reveal', [
             m('span.card-title.activator.grey-text.text-darken-4', [
               title,
               m(Icon, { iconName: 'close', className: 'right' }),
             ]),
-            m(SlimdownView, { md: desc }),
+            m.trust(render((type === 'mc' ? title : desc) || '', true)),
             author && m('p.right', author),
           ]),
           m('.card-action', [
+            m(
+              'a',
+              {
+                onclick: () => changePage(list),
+              },
+              m(Icon, {
+                className: 'hoverable black-text',
+                iconName: dashboardToIcon(list),
+              })
+            ),
             m(
               'a',
               {
