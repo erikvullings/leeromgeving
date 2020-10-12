@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/erikvullings/leeromgeving#readme",
   "devDependencies": {
-    "pnpm": "^5.7.0"
+    "pnpm": "^5.9.0"
   }
 }
