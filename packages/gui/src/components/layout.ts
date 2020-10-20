@@ -65,7 +65,7 @@ export const Layout: MeiosisComponent = () => ({
                       iconName: typeof d.icon === 'string' ? d.icon : d.icon(),
                       onclick: () => changePage(d.id),
                     }),
-                    m('span.tooltiptext', d.title.toUpperCase()),
+                    m('span.tooltiptext', (typeof d.title === 'string' ? d.title : d.title()).toUpperCase()),
                   ])
                 )
             ),

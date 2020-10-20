@@ -24,6 +24,8 @@ import {
   ScenarioView,
 } from '../components';
 import { DefaultForm } from '../components/ui';
+import { Login } from '.';
+import { Auth } from './login-service';
 
 export const enum Dashboards {
   HOME = 'HOME',
@@ -273,5 +275,13 @@ export const dashboardSvc: DashboardService = new DashboardService([
     route: '/about',
     visible: true,
     component: AboutPage,
+  },
+  {
+    id: Dashboards.USER,
+    title: () => (Auth.isAuthenticated ? Auth.username : 'Gebruiker'),
+    icon: () => (Auth.isAuthenticated ? 'person' : 'person_outline'),
+    route: '/gebruiker',
+    visible: true,
+    component: Login,
   },
 ]);

@@ -9,7 +9,7 @@ export interface IDashboard {
   id: Dashboards;
   default?: boolean;
   hasNavBar?: boolean;
-  title: string;
+  title: string | (() => string);
   icon: string | IconResolver;
   route: string;
   visible: boolean;
