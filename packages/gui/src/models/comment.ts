@@ -1,5 +1,5 @@
 export interface IComment {
-  author?: string;
+  author?: string[];
   desc?: string;
   rating?: number;
   /** Created date as number */

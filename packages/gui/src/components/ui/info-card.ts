@@ -10,6 +10,7 @@ export const InfoCard: FactoryComponent<{
   list: Dashboards;
   view: Dashboards;
   edit: Dashboards;
+  className?: string;
   changePage: (
     page: Dashboards,
     params?:
@@ -25,9 +26,9 @@ export const InfoCard: FactoryComponent<{
   ) => void;
 }> = () => {
   return {
-    view: ({ attrs: { item, changePage, view, edit, list } }) => {
+    view: ({ attrs: { item, changePage, className = 'col s12 m4', view, edit, list } }) => {
       const { rating = 0, comments = [], $loki, tag, title, desc, img, author, type } = item;
-      return m('.col.s12.m4', [
+      return m('div', { className }, [
         m(
           '.card.hoverable.sticky-action.small', // + (img ? '.medium' : '.small'),
           img &&

@@ -12,6 +12,8 @@ export interface IBasicContent {
   author?: string[];
   /** Rating score */
   rating?: number;
+  /** Rated by, either positive or negative */
+  ratedBy?: Array<{ author: string; rating: 1 | -1 }>;
   /** Link to an image, e.g. for the front page */
   img?: string;
   /** Link to an image, e.g. to go with the answer */

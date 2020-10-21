@@ -1,191 +1,213 @@
 import m from 'mithril';
-import { FloatingActionButton } from 'mithril-materialized';
+import { FlatButton, ModalPanel, RoundIconButton, TextInput } from 'mithril-materialized';
 import { IContent } from '../models';
-import { Dashboards, MeiosisComponent } from '../services';
-import { dashboardToIcon, sortByTime } from '../utils';
+import { Auth, Dashboards, MeiosisComponent } from '../services';
+import { sortByTime, titleAndDescriptionFilter } from '../utils';
 import { InfoCard } from './ui/info-card';
 
-export const HomePage: MeiosisComponent = () => ({
-  oninit: ({
-    attrs: {
-      actions: { lessons, news, dilemmas, tips, issues, scenarios },
+export const HomePage: MeiosisComponent = () => {
+  let filterValue = '';
+  return {
+    oninit: ({
+      attrs: {
+        actions: { lessons, news, dilemmas, tips, issues, scenarios },
+      },
+    }) => {
+      lessons.updateList();
+      news.updateList();
+      dilemmas.updateList();
+      tips.updateList();
+      issues.updateList();
+      scenarios.updateList();
     },
-  }) => {
-    lessons.updateList();
-    news.updateList();
-    dilemmas.updateList();
-    tips.updateList();
-    issues.updateList();
-    scenarios.updateList();
-  },
-  view: ({
-    attrs: {
-      state: { lessons, news, dilemmas, tips, issues, scenarios },
-      actions,
-    },
-  }) => {
-    const newsRelatedItems = [] as Array<Partial<IContent> & { list: Dashboards; view: Dashboards; edit: Dashboards }>;
-    if (news && news.list)
-      newsRelatedItems.push(
-        ...news.list.map((i) => ({
-          ...i,
-          view: Dashboards.NEWS_VIEW,
-          edit: Dashboards.NEWS_EDIT,
-          list: Dashboards.NEWS,
-        }))
-      );
-    if (lessons && lessons.list)
-      newsRelatedItems.push(
-        ...lessons.list.map((i) => ({
-          ...i,
-          view: Dashboards.LESSON_VIEW,
-          edit: Dashboards.LESSON_EDIT,
-          list: Dashboards.LESSONS,
-        }))
-      );
-    if (scenarios && scenarios.list)
-      newsRelatedItems.push(
-        ...scenarios.list.map((i) => ({
-          ...i,
-          view: Dashboards.SCENARIOS_VIEW,
-          edit: Dashboards.SCENARIOS_EDIT,
-          list: Dashboards.SCENARIOS,
-        }))
-      );
-    const infoRelatedItems = [] as Array<Partial<IContent> & { list: Dashboards; view: Dashboards; edit: Dashboards }>;
-    if (tips && tips.list)
-      infoRelatedItems.push(
-        ...tips.list.map((i) => ({
-          ...i,
-          view: Dashboards.TIPS_VIEW,
-          edit: Dashboards.TIPS_EDIT,
-          list: Dashboards.TIPS,
-        }))
-      );
-    if (issues && issues.list)
-      infoRelatedItems.push(
-        ...issues.list.map((i) => ({
-          ...i,
-          view: Dashboards.ISSUES_VIEW,
-          edit: Dashboards.ISSUES_EDIT,
-          list: Dashboards.ISSUES,
-        }))
-      );
-    if (dilemmas && dilemmas.list)
-      infoRelatedItems.push(
-        ...dilemmas.list.map((i) => ({
-          ...i,
-          view: Dashboards.DILEMMAS_VIEW,
-          edit: Dashboards.DILEMMAS_EDIT,
-          list: Dashboards.DILEMMAS,
-        }))
-      );
-    const { changePage } = actions;
-    return m(
-      '.row',
-      m('.col.s12', [
-        m(FloatingActionButton, {
-          className: 'red',
-          style: 'position: fixed',
-          iconName: 'mode_edit',
-          direction: 'left',
-          position: 'inline-right', // Comment this out to get a FAB in the bottom-left of the page.
-          buttons: [
-            {
-              iconName: dashboardToIcon(Dashboards.DILEMMAS),
-              className: 'red',
-              onClick: () =>
-                actions.dilemmas.save(
-                  {
-                    type: 'dilemma',
-                    title: 'Nieuwe vraag',
-                  } as IContent,
-                  (c) => actions.changePage(Dashboards.DILEMMAS_EDIT, { id: c.$loki })
-                ),
-            },
-            {
-              iconName: dashboardToIcon(Dashboards.LESSONS),
-              className: 'green darken-2',
-              onClick: () =>
-                actions.lessons.save(
-                  {
-                    type: 'lesson',
-                    title: 'Nieuwe les',
-                  } as IContent,
-                  (c) => actions.changePage(Dashboards.LESSON_EDIT, { id: c.$loki })
-                ),
-            },
-            {
-              iconName: dashboardToIcon(Dashboards.TIPS),
-              className: 'blue',
-              onClick: () =>
-                actions.tips.save(
-                  {
-                    type: 'tip',
-                    title: 'Nieuwe tip',
-                  } as IContent,
-                  (c) => actions.changePage(Dashboards.TIPS_EDIT, { id: c.$loki })
-                ),
-            },
-            {
-              iconName: dashboardToIcon(Dashboards.SCENARIOS),
-              className: 'brown',
-              onClick: () =>
-                actions.scenarios.save(
-                  {
-                    type: 'scenario',
-                    title: 'Nieuw scenario',
-                  } as IContent,
-                  (c) => actions.changePage(Dashboards.SCENARIOS_EDIT, { id: c.$loki })
-                ),
-            },
-            {
-              iconName: dashboardToIcon(Dashboards.NEWS),
-              className: 'yellow darken-1',
-              onClick: () =>
-                actions.news.save(
-                  {
-                    type: 'news',
-                    title: 'Nieuwtje van de dag',
-                  } as IContent,
-                  (c) => actions.changePage(Dashboards.NEWS_EDIT, { id: c.$loki })
-                ),
-            },
-            {
-              iconName: dashboardToIcon(Dashboards.ISSUES),
-              className: 'red',
-              onClick: () =>
-                actions.issues.save(
-                  {
-                    type: 'issue',
-                    title: 'Hulp gezocht',
-                  } as IContent,
-                  (c) => actions.changePage(Dashboards.ISSUES_EDIT, { id: c.$loki })
-                ),
-            },
-          ],
-        }),
-        m('h5', 'Nieuwtjes...'),
+    view: ({
+      attrs: {
+        state: { lessons, news, dilemmas, tips, issues, scenarios },
+        actions,
+      },
+    }) => {
+      const newsRelatedItems = [] as Array<
+        Partial<IContent> & { list: Dashboards; view: Dashboards; edit: Dashboards }
+      >;
+      let filterTitleAndDescription = titleAndDescriptionFilter(filterValue);
+      if (news && news.list)
+        newsRelatedItems.push(
+          ...news.list.filter(filterTitleAndDescription).map((i) => ({
+            ...i,
+            view: Dashboards.NEWS_VIEW,
+            edit: Dashboards.NEWS_EDIT,
+            list: Dashboards.NEWS,
+          }))
+        );
+      const infoRelatedItems = [] as Array<
+        Partial<IContent> & { list: Dashboards; view: Dashboards; edit: Dashboards }
+      >;
+      if (lessons && lessons.list)
+        infoRelatedItems.push(
+          ...lessons.list.filter(filterTitleAndDescription).map((i) => ({
+            ...i,
+            view: Dashboards.LESSON_VIEW,
+            edit: Dashboards.LESSON_EDIT,
+            list: Dashboards.LESSONS,
+          }))
+        );
+      if (scenarios && scenarios.list)
+        infoRelatedItems.push(
+          ...scenarios.list.filter(filterTitleAndDescription).map((i) => ({
+            ...i,
+            view: Dashboards.SCENARIOS_VIEW,
+            edit: Dashboards.SCENARIOS_EDIT,
+            list: Dashboards.SCENARIOS,
+          }))
+        );
+      if (tips && tips.list)
+        infoRelatedItems.push(
+          ...tips.list.filter(filterTitleAndDescription).map((i) => ({
+            ...i,
+            view: Dashboards.TIPS_VIEW,
+            edit: Dashboards.TIPS_EDIT,
+            list: Dashboards.TIPS,
+          }))
+        );
+      if (issues && issues.list)
+        infoRelatedItems.push(
+          ...issues.list.filter(filterTitleAndDescription).map((i) => ({
+            ...i,
+            view: Dashboards.ISSUES_VIEW,
+            edit: Dashboards.ISSUES_EDIT,
+            list: Dashboards.ISSUES,
+          }))
+        );
+      if (dilemmas && dilemmas.list)
+        infoRelatedItems.push(
+          ...dilemmas.list.filter(filterTitleAndDescription).map((i) => ({
+            ...i,
+            view: Dashboards.DILEMMAS_VIEW,
+            edit: Dashboards.DILEMMAS_EDIT,
+            list: Dashboards.DILEMMAS,
+          }))
+        );
+      const { changePage } = actions;
+      return m('.row', [
         m(
-          '.row',
+          '.col.s12.l3',
           m(
-            '.col.s12',
-            newsRelatedItems
-              .sort(sortByTime)
-              .map((n) => m(InfoCard, { item: n, list: n.list, view: n.view, edit: n.edit, changePage }))
+            'ul#slide-out.sidenav.sidenav-fixed',
+            {
+              oncreate: ({ dom }) => {
+                M.Sidenav.init(dom);
+              },
+            },
+            m('div', { style: 'margin-top: 10px;' }, [
+              m(TextInput, {
+                label: 'Zoek in de tekst',
+                id: 'filter',
+                placeholder: 'In titel/omschrijving...',
+                iconName: 'filter_list',
+                initialValue: filterValue,
+                onkeyup: (_: KeyboardEvent, v?: string) => (filterValue = v ? v : ''),
+                style: 'margin-right:100px',
+                className: 'col s12',
+              }),
+              m(FlatButton, {
+                label: 'Wis alle filters',
+                iconName: 'clear_all',
+                class: 'col s11',
+                style: 'margin: 1em;',
+                onclick: () => {
+                  filterValue = '';
+                  // state.policeUnitFilter.length = 0;
+                  // state.cmFunctionFilter.length = 0;
+                  // state.eventTypeFilter.length = 0;
+                  // state.itemTypeFilter.length = 0;
+                },
+              }),
+            ])
           )
         ),
-        m('h5', 'Leren van elkaar...'),
         m(
-          '.row',
-          m(
-            '.col.s12',
-            infoRelatedItems
-              .sort(sortByTime)
-              .map((n) => m(InfoCard, { item: n, list: n.list, view: n.view, edit: n.edit, changePage }))
-          )
+          '.col.s12.l9',
+          m('.hs-container', [
+            m('h5', [
+              'OC Sociaal',
+              Auth.isAuthenticated &&
+                m(RoundIconButton, {
+                  iconName: 'add',
+                  style: 'margin-left: 1rem',
+                  modalId: 'add-social-content',
+                }),
+            ]),
+            m(
+              'ul.hs.full',
+              newsRelatedItems
+                .sort(sortByTime)
+                .map((n) =>
+                  m(
+                    'li',
+                    m(InfoCard, { className: 'hs-item', item: n, list: n.list, view: n.view, edit: n.edit, changePage })
+                  )
+                )
+            ),
+            m('h5', [
+              'Actueel',
+              Auth.isAuthenticated &&
+                m(RoundIconButton, {
+                  iconName: 'add',
+                  style: 'margin-left: 1rem',
+                  modalId: 'add-learning-content',
+                }),
+            ]),
+            m(
+              'ul.hs.full',
+              infoRelatedItems
+                .sort(sortByTime)
+                .map((n) =>
+                  m(
+                    'li',
+                    m(InfoCard, { className: 'hs-item', item: n, list: n.list, view: n.view, edit: n.edit, changePage })
+                  )
+                )
+            ),
+            m('h5', [
+              'Leren van elkaar',
+              Auth.isAuthenticated &&
+                m(RoundIconButton, {
+                  iconName: 'add',
+                  style: 'margin-left: 1rem',
+                  modalId: 'add-learning-content',
+                }),
+            ]),
+            m(
+              'ul.hs.full',
+              infoRelatedItems
+                .sort(sortByTime)
+                .map((n) =>
+                  m(
+                    'li',
+                    m(InfoCard, { className: 'hs-item', item: n, list: n.list, view: n.view, edit: n.edit, changePage })
+                  )
+                )
+            ),
+            m('h5', ['Overig?']),
+            m(ModalPanel, {
+              id: 'add-social-content',
+              title: 'Do you like this library?',
+              description: 'This is some content.',
+              options: { opacity: 0.7 },
+              buttons: [
+                {
+                  label: 'Disagree',
+                  onclick: () => alert('You make me sad...'),
+                },
+                {
+                  label: 'Agree',
+                  onclick: () => alert('Thank you for the compliment!'),
+                },
+              ],
+            }),
+          ])
         ),
-      ])
-    );
-  },
-});
+      ]);
+    },
+  };
+};

@@ -17,7 +17,7 @@ export const Layout: MeiosisComponent = () => ({
   }) => {
     const isActive = (d: IDashboard) => (page === d.id ? '.active' : '');
 
-    return m('.main', [
+    return m('.main', { style: 'overflow-x: hidden' }, [
       m(
         '.navbar-fixed',
         { style: 'z-index: 1001' },
