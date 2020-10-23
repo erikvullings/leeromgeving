@@ -65,16 +65,18 @@ export const collectionFactory = <T extends IContent>(collectionName: Collection
             }
           },
           save: async (item, callback?: (current: Partial<T>) => void) => {
-            // const state = states();
-            // const { mode } = state[collectionName];
-            // const newMode = mode || !item.$loki ? 'edit' : 'view';
+            const state = states();
+            const old = state[collectionName].current as { [key: string]: any };
+            if (old) {
+              Object.keys(old).forEach((k) => (old[k] = undefined));
+            }
             const current = await restSvc.save(item);
             if (current) {
               // const state = states();
               // const list = state[collectionName].list as T[];
               // list.push(current);
               console.table(current);
-              us({ [collectionName]: { current } });
+              us({ [collectionName]: { old }, [collectionName]: { current } });
               callback && callback(current);
             }
           },
