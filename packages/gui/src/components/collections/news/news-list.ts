@@ -2,7 +2,7 @@ import m from 'mithril';
 import { FlatButton, TextInput } from 'mithril-materialized';
 import { Dashboards } from '../../../services/dashboard-service';
 import { sortByTitle, titleAndDescriptionFilter } from '../../../utils';
-import { MeiosisComponent } from '../../../services';
+import { Auth, MeiosisComponent } from '../../../services';
 import { IContent } from '../../../models';
 import { InfoCard } from '../../ui/info-card';
 
@@ -52,7 +52,7 @@ export const NewsList: MeiosisComponent = () => {
                     {
                       type: '',
                       title: 'Nieuw bericht',
-                      // owner: [Auth.username],
+                      author: [Auth.username],
                       // published: false,
                     } as IContent,
                     (c) => actions.changePage(Dashboards.NEWS_EDIT, { id: c.$loki })

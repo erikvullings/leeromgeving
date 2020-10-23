@@ -275,6 +275,13 @@ export const sortByTime: ((a: Partial<IContent>, b: Partial<IContent>) => number
   return dA > dB ? -1 : dA < dB ? 1 : 0;
 };
 
+export const sortByDate: ((a: Partial<IContent>, b: Partial<IContent>) => number) | undefined = (a, b) => {
+  console.table({ a, b });
+  const dA = new Date(a.date || 0);
+  const dB = new Date(b.date || 0);
+  return dA > dB ? 1 : dA < dB ? -1 : 0;
+};
+
 export const dashboardToIcon = (d: Dashboards) => {
   switch (d) {
     case Dashboards.NEWS:
@@ -305,3 +312,9 @@ export const mediaOptions = [
   { id: '.wmv' },
   { id: '.mkv' },
 ];
+
+export const formatDate = (date: number | Date) => {
+  const d = new Date(date);
+  const months = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'okt', 'nov', 'dec'];
+  return `${d.getDate()} ${months[d.getMonth() - 1]}`;
+};

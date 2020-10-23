@@ -2,7 +2,7 @@ import m from 'mithril';
 import { FlatButton, ModalPanel, RoundIconButton, TextInput } from 'mithril-materialized';
 import { IContent } from '../models';
 import { Auth, Dashboards, MeiosisComponent } from '../services';
-import { sortByTime, titleAndDescriptionFilter } from '../utils';
+import { formatDate, sortByDate, sortByTime, titleAndDescriptionFilter } from '../utils';
 import { InfoCard } from './ui/info-card';
 
 export const HomePage: MeiosisComponent = () => {
@@ -87,6 +87,9 @@ export const HomePage: MeiosisComponent = () => {
             list: Dashboards.DILEMMAS,
           }))
         );
+      const calendarItems = [...newsRelatedItems.filter((c) => c.date), ...infoRelatedItems.filter((c) => c.date)];
+      const actualItems = [...newsRelatedItems.filter((c) => c.pinned), ...infoRelatedItems.filter((c) => c.pinned)];
+
       const { changePage } = actions;
       return m('.row', [
         m(
@@ -110,7 +113,7 @@ export const HomePage: MeiosisComponent = () => {
                 className: 'col s12',
               }),
               m(FlatButton, {
-                label: 'Wis alle filters',
+                label: 'Wis',
                 iconName: 'clear_all',
                 class: 'col s11',
                 style: 'margin: 1em;',
@@ -122,6 +125,18 @@ export const HomePage: MeiosisComponent = () => {
                   // state.itemTypeFilter.length = 0;
                 },
               }),
+
+              m('.col.s10.offset-s1.section-wrapper'),
+              calendarItems.length > 0 &&
+                calendarItems.sort(sortByDate).map((i) =>
+                  m(FlatButton, {
+                    label: i.date ? `${formatDate(i.date)}: ${i.title}` : '',
+                    class: 'col s12',
+                    style: 'margin: 1em;',
+                    iconName: 'visibility',
+                    onclick: () => actions.changePage(i.view, { id: i.$loki }),
+                  })
+                ),
             ])
           )
         ),
@@ -134,12 +149,23 @@ export const HomePage: MeiosisComponent = () => {
                 m(RoundIconButton, {
                   iconName: 'add',
                   style: 'margin-left: 1rem',
-                  modalId: 'add-social-content',
+                  onclick: () => {
+                    actions.news.save(
+                      {
+                        type: '',
+                        title: 'Nieuw bericht',
+                        author: [Auth.username],
+                        // published: false,
+                      } as IContent,
+                      (c) => actions.changePage(Dashboards.NEWS_EDIT, { id: c.$loki })
+                    );
+                  },
                 }),
             ]),
             m(
               'ul.hs.full',
               newsRelatedItems
+                .filter((c) => !c.pinned)
                 .sort(sortByTime)
                 .map((n) =>
                   m(
@@ -148,26 +174,25 @@ export const HomePage: MeiosisComponent = () => {
                   )
                 )
             ),
-            m('h5', [
-              'Actueel',
-              Auth.isAuthenticated &&
-                m(RoundIconButton, {
-                  iconName: 'add',
-                  style: 'margin-left: 1rem',
-                  modalId: 'add-learning-content',
-                }),
-            ]),
-            m(
-              'ul.hs.full',
-              infoRelatedItems
-                .sort(sortByTime)
-                .map((n) =>
+            actualItems.length > 0 && [
+              m('h5', 'Actueel'),
+              m(
+                'ul.hs.full',
+                actualItems.sort(sortByTime).map((n) =>
                   m(
                     'li',
-                    m(InfoCard, { className: 'hs-item', item: n, list: n.list, view: n.view, edit: n.edit, changePage })
+                    m(InfoCard, {
+                      className: 'hs-item',
+                      item: n,
+                      list: n.list,
+                      view: n.view,
+                      edit: n.edit,
+                      changePage,
+                    })
                   )
                 )
-            ),
+              ),
+            ],
             m('h5', [
               'Leren van elkaar',
               Auth.isAuthenticated &&
@@ -180,6 +205,7 @@ export const HomePage: MeiosisComponent = () => {
             m(
               'ul.hs.full',
               infoRelatedItems
+                .filter((c) => !c.pinned)
                 .sort(sortByTime)
                 .map((n) =>
                   m(
@@ -190,7 +216,7 @@ export const HomePage: MeiosisComponent = () => {
             ),
             m('h5', ['Overig?']),
             m(ModalPanel, {
-              id: 'add-social-content',
+              id: 'add-learning-content',
               title: 'Do you like this library?',
               description: 'This is some content.',
               options: { opacity: 0.7 },

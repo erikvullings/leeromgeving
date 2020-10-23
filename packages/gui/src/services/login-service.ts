@@ -1,6 +1,6 @@
 // import Keycloak, { KeycloakError, KeycloakInstance } from 'keycloak-js';
 import m, { FactoryComponent } from 'mithril';
-import { FlatButton, Options, Select, TextInput } from 'mithril-materialized';
+import { FlatButton, Select, TextInput } from 'mithril-materialized';
 import { IContent } from '../models';
 import { Roles } from '../models/roles';
 
@@ -28,7 +28,9 @@ export const Auth = {
   },
   /** Can edit all documents, (un-)publish them. */
   isEditor() {
-    return Auth.roles.indexOf(Roles.EDITOR) >= 0;
+    return (
+      Auth.roles.indexOf(Roles.EDITOR) >= 0 || Auth.roles.indexOf(Roles.HOVD) >= 0 || Auth.roles.indexOf(Roles.OVD) >= 0
+    );
   },
   /** Can edit the document, but also change the persons that have access. */
   isOwner(doc: Partial<IContent>) {

@@ -8,6 +8,8 @@ export interface IBasicContent {
   type?: string | string[];
   /** Title of the item */
   title?: string;
+  /** Is the item pinned */
+  pinned?: boolean;
   /** Author of the item */
   author?: string[];
   /** Rating score */
@@ -22,6 +24,10 @@ export interface IBasicContent {
   tag?: string;
   /** Longer description of the item */
   desc?: string;
+  /** Optional date of the content */
+  date?: number;
+  /** External link */
+  link?: string;
   /** List of comments */
   comments?: IComment[];
 }

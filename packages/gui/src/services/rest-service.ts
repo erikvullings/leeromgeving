@@ -78,6 +78,8 @@ const createRestServiceFactory = (apiService: string) => {
         '$loki',
         'meta',
         'type',
+        'pinned',
+        'date',
         'title',
         'author',
         'desc',

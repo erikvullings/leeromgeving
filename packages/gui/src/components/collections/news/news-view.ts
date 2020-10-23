@@ -54,7 +54,7 @@ export const NewsView: MeiosisComponent = () => {
         return undefined;
       }
 
-      const { desc } = current;
+      const { desc, link } = current;
 
       return [
         m(
@@ -62,7 +62,12 @@ export const NewsView: MeiosisComponent = () => {
           m('.row', [
             m(TitleRating, { content: current }),
             m(ImageBox, { content: current }),
-            m('.col.s12', m(SlimdownView, { md: desc })),
+            m(SlimdownView, { md: desc }),
+            link &&
+              m(
+                '.col.s12',
+                m('a', { href: link, alt: 'Bron', target: '_target' }, m('i', 'Voor meer informatie, klik hier.'))
+              ),
           ])
         ),
         m(ViewFooter, {
