@@ -2,7 +2,7 @@ import m from 'mithril';
 import { FlatButton, TextInput } from 'mithril-materialized';
 import { Dashboards } from '../../../services/dashboard-service';
 import { sortByTime, titleAndDescriptionFilter } from '../../../utils';
-import { MeiosisComponent } from '../../../services';
+import { Auth, MeiosisComponent } from '../../../services';
 import { IContent } from '../../../models';
 import { InfoCard } from '../../ui/info-card';
 
@@ -52,10 +52,11 @@ export const DilemmasList: MeiosisComponent = () => {
                 class: 'col s11 indigo darken-4 white-text',
                 style: 'margin: 1em;',
                 onclick: () => {
-                  actions.dilemmas.save(
+                  actions.dilemmas.create(
                     {
                       type: '',
                       title: 'Nieuwe vraag',
+                      author: [Auth.username],
                       // owner: [Auth.username],
                       // published: false,
                     } as IContent,

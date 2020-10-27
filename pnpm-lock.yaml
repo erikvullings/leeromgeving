@@ -1,6 +1,6 @@
 devDependencies:
   pnpm: 5.9.0
-lockfileVersion: 5.1
+lockfileVersion: 5.2
 packages:
   /pnpm/5.9.0:
     dev: true

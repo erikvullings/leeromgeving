@@ -19,6 +19,8 @@ export type CollectionActions<T extends IContent> = {
   updateList: () => void;
   /** Select an item */
   load: (id: number) => void;
+  /** Create an item */
+  create: (item: Partial<T>, callback?: (current: Partial<T>) => void) => void; // | T;
   /** Save an item */
   save: (item: Partial<T>, callback?: (current: Partial<T>) => void) => void; // | T;
   /** Delete an item */
@@ -64,7 +66,7 @@ export const collectionFactory = <T extends IContent>(collectionName: Collection
               us({ [collectionName]: { current: { ...old, ...current } } });
             }
           },
-          save: async (item, callback?: (current: Partial<T>) => void) => {
+          create: async (item, callback?: (current: Partial<T>) => void) => {
             const state = states();
             const old = state[collectionName].current as { [key: string]: any };
             if (old) {
@@ -76,7 +78,18 @@ export const collectionFactory = <T extends IContent>(collectionName: Collection
               // const list = state[collectionName].list as T[];
               // list.push(current);
               console.table(current);
-              us({ [collectionName]: { old }, [collectionName]: { current } });
+              us({ [collectionName]: { current: old }, [collectionName]: { current } });
+              callback && callback(current);
+            }
+          },
+          save: async (item, callback?: (current: Partial<T>) => void) => {
+            const current = await restSvc.save(item);
+            if (current) {
+              // const state = states();
+              // const list = state[collectionName].list as T[];
+              // list.push(current);
+              console.table(current);
+              us({ [collectionName]: { current } });
               callback && callback(current);
             }
           },

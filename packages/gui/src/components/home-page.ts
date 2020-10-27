@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { FlatButton, ModalPanel, RoundIconButton, TextInput } from 'mithril-materialized';
+import { SlimdownView } from 'mithril-ui-form';
 import { IContent } from '../models';
 import { Auth, Dashboards, MeiosisComponent } from '../services';
 import { formatDate, sortByDate, sortByTime, titleAndDescriptionFilter } from '../utils';
@@ -150,7 +151,7 @@ export const HomePage: MeiosisComponent = () => {
                   iconName: 'add',
                   style: 'margin-left: 1rem',
                   onclick: () => {
-                    actions.news.save(
+                    actions.news.create(
                       {
                         type: '',
                         title: 'Nieuw bericht',
@@ -175,7 +176,26 @@ export const HomePage: MeiosisComponent = () => {
                 )
             ),
             actualItems.length > 0 && [
-              m('h5', 'Actueel'),
+              m('h5', [
+                'Actueel',
+                Auth.isAuthenticated &&
+                  m(RoundIconButton, {
+                    iconName: 'add',
+                    style: 'margin-left: 1rem',
+                    onclick: () => {
+                      actions.news.create(
+                        {
+                          type: '',
+                          title: 'Nieuw bericht',
+                          pinned: true,
+                          author: [Auth.username],
+                          // published: false,
+                        } as IContent,
+                        (c) => actions.changePage(Dashboards.NEWS_EDIT, { id: c.$loki })
+                      );
+                    },
+                  }),
+              ]),
               m(
                 'ul.hs.full',
                 actualItems.sort(sortByTime).map((n) =>
@@ -217,17 +237,76 @@ export const HomePage: MeiosisComponent = () => {
             m('h5', ['Overig?']),
             m(ModalPanel, {
               id: 'add-learning-content',
-              title: 'Do you like this library?',
-              description: 'This is some content.',
+              title: 'Voeg een nieuw bericht toe',
+              fixedFooter: true,
+              description: m(SlimdownView, {
+                md: `Kies uit een van de volgende:
+              - **Scenario** dat je meegemaakt hebt
+              - **Les** die je geleerd hebt
+              - **Tip** die je wil delen
+              - **Probleem** waar je mee zit
+              - **Vraag** (meerkeuzevraag, open vraag of dilemma)`,
+              }),
               options: { opacity: 0.7 },
               buttons: [
                 {
-                  label: 'Disagree',
-                  onclick: () => alert('You make me sad...'),
+                  label: 'Cancel',
+                  // onclick: () => alert('You make me sad...'),
                 },
                 {
-                  label: 'Agree',
-                  onclick: () => alert('Thank you for the compliment!'),
+                  label: 'Scenario',
+                  onclick: () =>
+                    actions.scenarios.create(
+                      {
+                        title: 'Nieuw scenario',
+                        author: [Auth.username],
+                      },
+                      (c) => actions.changePage(Dashboards.SCENARIOS_EDIT, { id: c.$loki })
+                    ),
+                },
+                {
+                  label: 'Les',
+                  onclick: () =>
+                    actions.lessons.create(
+                      {
+                        title: 'Nieuwe les',
+                        author: [Auth.username],
+                      },
+                      (c) => actions.changePage(Dashboards.LESSON_EDIT, { id: c.$loki })
+                    ),
+                },
+                {
+                  label: 'Tip',
+                  onclick: () =>
+                    actions.tips.create(
+                      {
+                        title: 'Nieuwe tip',
+                        author: [Auth.username],
+                      },
+                      (c) => actions.changePage(Dashboards.TIPS_EDIT, { id: c.$loki })
+                    ),
+                },
+                {
+                  label: 'Probleem',
+                  onclick: () =>
+                    actions.issues.create(
+                      {
+                        title: 'Nieuw probleem',
+                        author: [Auth.username],
+                      },
+                      (c) => actions.changePage(Dashboards.ISSUES_EDIT, { id: c.$loki })
+                    ),
+                },
+                {
+                  label: 'Vraag',
+                  onclick: () =>
+                    actions.dilemmas.create(
+                      {
+                        title: 'Nieuwe vraag',
+                        author: [Auth.username],
+                      },
+                      (c) => actions.changePage(Dashboards.DILEMMAS_EDIT, { id: c.$loki })
+                    ),
                 },
               ],
             }),

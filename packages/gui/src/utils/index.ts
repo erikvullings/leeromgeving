@@ -276,7 +276,6 @@ export const sortByTime: ((a: Partial<IContent>, b: Partial<IContent>) => number
 };
 
 export const sortByDate: ((a: Partial<IContent>, b: Partial<IContent>) => number) | undefined = (a, b) => {
-  console.table({ a, b });
   const dA = new Date(a.date || 0);
   const dB = new Date(b.date || 0);
   return dA > dB ? 1 : dA < dB ? -1 : 0;

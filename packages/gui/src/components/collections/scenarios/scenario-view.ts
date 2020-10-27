@@ -43,7 +43,7 @@ export const ScenarioView: MeiosisComponent = () => {
       }
 
       const { desc, phases = [] } = current;
-      const fase = Math.min(0, Math.max(phases.length - 1, +m.route.param('fase') || 0));
+      const fase = Math.max(0, Math.min(phases.length - 1, +m.route.param('fase') || 0));
       const phase = phases.length > 0 && phases[fase];
       const showAnswer = m.route.param('toon');
 
@@ -58,33 +58,38 @@ export const ScenarioView: MeiosisComponent = () => {
               phases.length > 1 &&
                 m(
                   '.col.s12',
+                  {
+                    key: 'pager',
+                  },
                   m(Pagination, {
-                    size: 5,
+                    size: 10,
                     className: 'col s12',
+                    curPage: fase + 1,
                     items: phases.map((_p, i) => ({ href: `/draaiboek/${current.$loki}?fase=${i}` })),
                   })
                 ),
-              phase && [
-                m('h4', `Fase ${fase + 1}: ${phase.title}`),
-                m(ImageBox, { content: phase }),
-                m('.col.s12', m(SlimdownView, { md: phase.desc })),
-                phase.dilemmas && [
-                  m('h5', 'Vragen'),
-                  phase.dilemmas.map((d) =>
-                    m('.col.s12', [
-                      d.title && m(SlimdownView, { md: '* ' + d.title }),
-                      d.desc && m(SlimdownView, { md: d.desc }),
-                      showAnswer && d.notes && m(SlimdownView, { md: '> ' + d.notes }),
-                    ])
-                  ),
-                  m(FlatButton, {
-                    className: 'right-align',
-                    label: showAnswer ? 'Verberg de keuzes' : 'Toon gemaakte keuzes',
-                    onclick: () =>
-                      changePage(Dashboards.SCENARIOS_VIEW, { id }, showAnswer ? { fase } : { fase, toon: 'true' }),
-                  }),
-                ],
-              ],
+              phase &&
+                m('div', { key: Date.now() }, [
+                  m('h4', `Fase ${fase + 1}: ${phase.title}`),
+                  m(ImageBox, { content: phase }),
+                  m('.col.s12', m(SlimdownView, { md: phase.desc })),
+                  phase.dilemmas && [
+                    m('h5', 'Vragen'),
+                    phase.dilemmas.map((d) =>
+                      m('.col.s12', [
+                        d.title && m(SlimdownView, { md: '* ' + d.title }),
+                        d.desc && m(SlimdownView, { md: d.desc }),
+                        showAnswer && d.notes && m(SlimdownView, { md: '> ' + d.notes }),
+                      ])
+                    ),
+                    m(FlatButton, {
+                      className: 'right-align',
+                      label: showAnswer ? 'Verberg de keuzes' : 'Toon gemaakte keuzes',
+                      onclick: () =>
+                        changePage(Dashboards.SCENARIOS_VIEW, { id }, showAnswer ? { fase } : { fase, toon: 'true' }),
+                    }),
+                  ],
+                ]),
             ],
           ])
         ),

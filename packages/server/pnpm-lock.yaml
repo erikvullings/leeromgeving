@@ -2,7 +2,7 @@ dependencies:
   rest-easy-loki: 0.7.6
 devDependencies:
   rimraf: 3.0.2
-lockfileVersion: 5.1
+lockfileVersion: 5.2
 packages:
   /@koa/cors/3.1.0:
     dependencies:

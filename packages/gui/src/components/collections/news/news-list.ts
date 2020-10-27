@@ -48,7 +48,7 @@ export const NewsList: MeiosisComponent = () => {
                 class: 'col s11 indigo darken-4 white-text',
                 style: 'margin: 1em;',
                 onclick: () => {
-                  actions.news.save(
+                  actions.news.create(
                     {
                       type: '',
                       title: 'Nieuw bericht',

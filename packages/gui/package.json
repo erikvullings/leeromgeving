@@ -30,18 +30,18 @@
     "materialize-css": "^1.0.0",
     "mithril": "^2.0.4",
     "mithril-leaflet": "^0.4.3",
-    "mithril-materialized": "^0.16.5",
-    "mithril-ui-form": "^0.8.9",
+    "mithril-materialized": "^0.18.1",
+    "mithril-ui-form": "0.8.13",
     "rfc6902": "^4.0.1",
     "slimdown-js": "^0.3.2"
   },
   "devDependencies": {
-    "@types/leaflet": "^1.5.18",
+    "@types/leaflet": "^1.5.19",
     "@types/materialize-css": "^1.0.8",
-    "@types/mithril": "^2.0.4",
+    "@types/mithril": "^2.0.5",
     "cssnano": "^4.1.10",
     "parcel-bundler": "^1.12.4",
     "rimraf": "^3.0.2",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.5"
   }
 }

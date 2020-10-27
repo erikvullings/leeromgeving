@@ -28,7 +28,7 @@ export const dilemmaOptions = [
 export const dilemmasTemplate = [
   { id: 'type', className: 'col s4', label: 'Soort vraag', type: 'select', options: dilemmaOptions },
   { id: 'title', show: '!type=mc & type=question', className: 'col s4', label: 'Titel', type: 'text' },
-  { id: 'author', className: 'col s4', label: 'Auteur(s)', type: 'text' },
+  { id: 'author', className: 'col s4', label: 'Auteur(s)', type: 'text', disabled: true },
   { id: 'desc', show: ['type=role', 'type=characteristics'], label: 'Situatie', type: 'textarea' },
   { id: 'title', show: ['type=mc', 'type=question'], label: 'Vraag', type: 'textarea' },
   { id: 'desc', show: 'type=question', label: 'Antwoord', type: 'textarea' },

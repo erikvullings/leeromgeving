@@ -12,7 +12,7 @@ export const scenarioCategories = [
 export const scenarioTemplate = [
   { id: 'title', className: 'col s4', label: 'Onderwerp', type: 'text' },
   { id: 'type', className: 'col s4', label: 'Categorie', type: 'select', options: scenarioCategories },
-  { id: 'author', className: 'col s4', label: 'Auteur', type: 'text' },
+  { id: 'author', className: 'col s4', label: 'Auteur', type: 'text', disabled: true },
   { id: 'desc', label: 'Context', type: 'textarea' },
   {
     id: 'img',

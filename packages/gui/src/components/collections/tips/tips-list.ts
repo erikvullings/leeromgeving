@@ -2,7 +2,7 @@ import m from 'mithril';
 import { FlatButton, TextInput } from 'mithril-materialized';
 import { Dashboards } from '../../../services/dashboard-service';
 import { sortByTitle, titleAndDescriptionFilter } from '../../../utils';
-import { MeiosisComponent } from '../../../services';
+import { Auth, MeiosisComponent } from '../../../services';
 import { IContent } from '../../../models';
 import { InfoCard } from '../../ui/info-card';
 
@@ -47,10 +47,11 @@ export const TipsList: MeiosisComponent = () => {
                 class: 'col s11 indigo darken-4 white-text',
                 style: 'margin: 1em;',
                 onclick: () => {
-                  actions.tips.save(
+                  actions.tips.create(
                     {
                       type: '',
                       title: 'Nieuwe tip',
+                      author: [Auth.username],
                       // owner: [Auth.username],
                       // published: false,
                     } as IContent,
