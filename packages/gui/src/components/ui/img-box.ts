@@ -10,12 +10,18 @@ export const ImageBox: FactoryComponent<{ content: Partial<IContent> }> = () => 
     }) => {
       return (
         img &&
-        m('img.materialboxed', {
-          style: 'max-width: 100%; max-height: 300px; margin: 0 auto',
-          alt: title,
-          src: `${process.env.SERVER}${img}`,
-          oncreate: ({ dom }) => M.Materialbox.init(dom),
-        })
+        m(
+          '.row',
+          m(
+            '.col.s12',
+            m('img.materialboxed', {
+              style: 'max-width: 100%; max-height: 500px; margin: 0px auto',
+              alt: title,
+              src: `${process.env.SERVER}${img}`,
+              oncreate: ({ dom }) => M.Materialbox.init(dom),
+            })
+          )
+        )
       );
     },
   };
