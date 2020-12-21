@@ -79,6 +79,11 @@ class DashboardService {
     return dashboard ? dashboard.route : this.defaultRoute;
   }
 
+  public href(dashboardId: Dashboards, params = '' as string | number) {
+    const dashboard = this.dashboards.filter((d) => d.id === dashboardId).shift();
+    return dashboard ? `#!${dashboard.route.replace(/:\w*/, '')}${params}` : this.defaultRoute;
+  }
+
   public switchTo(
     dashboardId: Dashboards,
     params?: { [key: string]: string | number | undefined },
