@@ -409,3 +409,8 @@ Source: https://codepen.io/dannievinther/pen/vVydZJ
   -webkit-transition: margin 0.25s ease;
   transition: margin 0.25s ease;
 }
+
+.bottom {
+  position: absolute;
+  bottom: 10px;
+}
