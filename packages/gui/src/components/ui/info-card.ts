@@ -2,7 +2,7 @@ import m, { FactoryComponent } from 'mithril';
 import { Icon } from 'mithril-materialized';
 import { render } from 'mithril-ui-form';
 import { IContent } from '../../models';
-import { Auth, Dashboards } from '../../services';
+import { Auth, Dashboards, dashboardSvc } from '../../services';
 import { dashboardToIcon } from '../../utils';
 
 export const InfoCard: FactoryComponent<{
@@ -55,39 +55,70 @@ export const InfoCard: FactoryComponent<{
             author && m('p.right', author),
           ]),
           m('.card-action', [
-            m(
-              'a',
-              {
-                onclick: () => changePage(list),
-              },
-              m(Icon, {
-                className: 'hoverable black-text',
-                iconName: dashboardToIcon(list),
-              })
-            ),
-            m(
-              'a',
-              {
-                onclick: () => changePage(view, { id: $loki }),
-              },
-              m(Icon, {
-                className: 'hoverable black-text',
-                iconName: 'visibility',
-              })
-            ),
-            Auth.isOwner(item) &&
+            m('ul.list-inline', [
               m(
-                'a',
-                {
-                  onclick: () => changePage(edit, { id: $loki }),
-                },
-                m(Icon, {
-                  className: 'hoverable black-text',
-                  iconName: 'edit',
-                })
+                'li',
+                m(
+                  'a',
+                  {
+                    href: dashboardSvc.href(list),
+                  },
+                  m(Icon, {
+                    className: 'hoverable black-text',
+                    iconName: dashboardToIcon(list),
+                  })
+                )
               ),
-            rating > 0 && m.trust(`<span class="badge">${rating}&#9733;</span>`),
-            comments.length > 0 && m.trust(`<span class="badge">${comments.length}&#9993;</span>`),
+              m(
+                'li',
+                m(
+                  'a',
+                  {
+                    href: dashboardSvc.href(view, $loki),
+                  },
+                  m(Icon, {
+                    className: 'hoverable black-text',
+                    iconName: 'visibility',
+                  })
+                )
+              ),
+              Auth.isOwner(item) &&
+                m(
+                  'li',
+                  m(
+                    'a',
+                    {
+                      href: dashboardSvc.href(edit, $loki),
+                    },
+                    m(Icon, {
+                      className: 'hoverable black-text',
+                      iconName: 'edit',
+                    })
+                  )
+                ),
+              rating > 0 &&
+                m(
+                  'li',
+                  m(
+                    'a',
+                    {
+                      href: dashboardSvc.href(view, $loki),
+                    },
+                    m('span.badge', { style: 'margin-left: 0' }, m.trust(`${rating}&#9733;`))
+                  )
+                ),
+              comments.length > 0 &&
+                m(
+                  'li',
+                  m(
+                    'a',
+                    {
+                      href: dashboardSvc.href(view, $loki),
+                    },
+                    m('span.badge', { style: 'margin-left: 0' }, m.trust(`${comments.length}&#9993;`))
+                  )
+                ),
+            ]),
           ])
         ),
       ]);

@@ -94,7 +94,7 @@ export const HomePage: MeiosisComponent = () => {
       const { changePage } = actions;
       return m('.row', [
         m(
-          '.col.s12.l3',
+          '.col.s12.l3.xl2',
           m(
             'ul#slide-out.sidenav.sidenav-fixed',
             {
@@ -142,7 +142,7 @@ export const HomePage: MeiosisComponent = () => {
           )
         ),
         m(
-          '.col.s12.l9',
+          '.col.s12.l9.xl10',
           m('.hs-container', [
             m('h5', [
               'OC Sociaal',
@@ -234,7 +234,7 @@ export const HomePage: MeiosisComponent = () => {
                   )
                 )
             ),
-            m('h5', ['Overig?']),
+            // m('h5', ['Overig?']),
             m(ModalPanel, {
               id: 'add-learning-content',
               title: 'Voeg een nieuw bericht toe',

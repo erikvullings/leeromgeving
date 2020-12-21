@@ -1,3 +1,6 @@
+.container {
+  max-width: 100%;
+}
 @media only screen and (min-width: 601px) {
   .container {
     width: 90%;
@@ -384,12 +387,18 @@ Source: https://codepen.io/dannievinther/pen/vVydZJ
   grid-template-columns: 10px;
   grid-template-rows: minmax(150px, 1fr);
   grid-auto-flow: column;
-  grid-auto-columns: calc(40% - var(--gutter) * 2);
+  grid-auto-columns: calc(47% - var(--gutter) * 2);
 
   overflow-x: scroll;
   scroll-snap-type: x proximity;
   padding-bottom: calc(0.75 * var(--gutter));
   margin-bottom: calc(-0.25 * var(--gutter));
+}
+
+@media only screen and (min-width: 1200px) {
+  .hs {
+    grid-auto-columns: calc(25% - var(--gutter) * 2);
+  }
 }
 
 .hs:before,
