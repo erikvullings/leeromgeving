@@ -4,10 +4,9 @@ import { IContent } from '../models';
 const log = console.log;
 const error = console.error;
 
-const createRestServiceFactory = (apiService: string) => {
+const createRestServiceFactory = () => {
   return <T extends IContent>(urlFragment: string) => {
-    console.log(apiService);
-    const url = `${apiService}/api/${urlFragment}/`;
+    const url = `${process.env.SERVER}/api/${urlFragment}/`;
     const withCredentials = false;
 
     const create = async (item: Partial<T>, fd?: FormData) => {
@@ -114,4 +113,4 @@ const createRestServiceFactory = (apiService: string) => {
   };
 };
 
-export const restServiceFactory = createRestServiceFactory(process.env.SERVER || location.origin);
+export const restServiceFactory = createRestServiceFactory();
