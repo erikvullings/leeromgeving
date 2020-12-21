@@ -78,7 +78,7 @@ export const Login: FactoryComponent = () => {
     },
     view: () => {
       console.log(`Authenticated: ${Auth.isAuthenticated}`);
-      return m('.row', { style: 'margin-top: 10px;' }, [
+      return m('.row', { style: 'margin-top: 10px;height: 80vh' }, [
         m(
           '.col.s6',
           m(TextInput, {
