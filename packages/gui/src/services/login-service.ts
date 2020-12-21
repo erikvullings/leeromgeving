@@ -82,7 +82,7 @@ export const Login: FactoryComponent = () => {
         m(
           '.col.s6',
           m(TextInput, {
-            label: 'Username',
+            label: 'Gebruikersnaam',
             initialValue: Auth.username,
             iconName: 'person',
             onchange: Auth.setUsername,
@@ -91,7 +91,7 @@ export const Login: FactoryComponent = () => {
         m(
           '.col.s6',
           m(Select, {
-            label: 'Roles',
+            label: 'Rollen',
             multiple: true,
             options: [
               { id: Roles.OVD, label: 'OVD' },
