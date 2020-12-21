@@ -22,7 +22,7 @@
   "author": "Erik Vullings <erik.vullings@tno.nl> (http://www.tno.nl)",
   "license": "MIT",
   "dependencies": {
-    "rest-easy-loki": "^0.7.6"
+    "rest-easy-loki": "0.7.6"
   },
   "devDependencies": {
     "rimraf": "^3.0.2"
