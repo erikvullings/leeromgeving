@@ -2,7 +2,7 @@ import m, { FactoryComponent } from 'mithril';
 import { Icon } from 'mithril-materialized';
 import { render } from 'mithril-ui-form';
 import { IContent } from '../../models';
-import { Dashboards } from '../../services';
+import { Auth, Dashboards } from '../../services';
 import { dashboardToIcon } from '../../utils';
 
 export const InfoCard: FactoryComponent<{
@@ -75,16 +75,17 @@ export const InfoCard: FactoryComponent<{
                 iconName: 'visibility',
               })
             ),
-            m(
-              'a',
-              {
-                onclick: () => changePage(edit, { id: $loki }),
-              },
-              m(Icon, {
-                className: 'hoverable black-text',
-                iconName: 'edit',
-              })
-            ),
+            Auth.isOwner(item) &&
+              m(
+                'a',
+                {
+                  onclick: () => changePage(edit, { id: $loki }),
+                },
+                m(Icon, {
+                  className: 'hoverable black-text',
+                  iconName: 'edit',
+                })
+              ),
             rating > 0 && m.trust(`<span class="badge">${rating}&#9733;</span>`),
             comments.length > 0 && m.trust(`<span class="badge">${comments.length}&#9993;</span>`),
           ])
