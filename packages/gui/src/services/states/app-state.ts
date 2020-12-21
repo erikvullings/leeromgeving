@@ -26,6 +26,8 @@ export interface IAppState {
   actions: (us: UpdateStream, states: Stream<IAppModel>) => IAppStateActions;
 }
 
+console.log(`API server: ${process.env.SERVER}`);
+
 export const appStateMgmt = {
   initial: {
     app: {
